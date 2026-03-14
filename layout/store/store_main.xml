@@ -1,0 +1,97 @@
+
+<root>
+	<styles>
+		<include src="file://{resources}/styles/csgostyles.css" />
+		<include src="file://{resources}/styles/mainmenu.css" />
+		<include src="file://{resources}/styles/mainmenu_inventory.css" />
+		<include src="file://{resources}/styles/popups/popup_subscription_upsell.css" />
+		<include src="file://{resources}/styles/store/store_main.css" />
+	</styles>
+	<scripts>
+		<include src="file://{resources}/scripts/store/store_itemtile.js" />
+		<include src="file://{resources}/scripts/store/store_items.js" />
+		<include src="file://{resources}/scripts/generated/items_event_current_generated_store.js" />
+		<include src="file://{resources}/scripts/common/iteminfo.js" />
+		<include src="file://{resources}/scripts/common/formattext.js" />
+		<!-- <include src="file://{resources}/scripts/common/prime_button_action.js" /> -->
+		<include src="file://{resources}/scripts/common/tint_spray_icon.js" />
+		<include src="file://{resources}/scripts/store/store_main.js" />
+	</scripts>
+	<snippets>
+		<snippet name="InvSearchSnippet">
+			<Panel class="inv-category">
+				<Panel id="InvSearchNavBar" class="horizontal-center full-width" hittest="true">
+					<Panel id="InvSearchTextEntryContainer" class="inv-search-navbar">
+						<TextEntry id="InvSearchTextEntry" class="inv-search-textentry" placeholder="#inv_search_default" onfocus="" />
+					</Panel>
+				</Panel>
+				<Panel class="full-width full-height">
+					<InventoryItemList id="InvSearchPanel-List" />
+					<Panel id="InvSearchSuggestions" class="inv-search__suggestions">
+						<Label html="true" text="#inv_search_popular" class="bottom-padding-medium fontWeight-Light" />
+						<Panel id="InvSearchSuggestionsList" class="top-bottom-flow" />
+					</Panel>
+				</Panel>
+			</Panel>
+		</snippet>
+		<snippet name="SuggestedEntry">
+			<Button class="inv-search__suggestions_entry">
+				<Label id="SuggestedLabel" html="true" text="" />
+			</Button>
+		</snippet>
+		<snippet name="InvEmptyLister">
+			<Panel class="full-width full-height mainmenu-content__background-color">
+				<Panel class="left-right-flow horizontal-center vertical-center">
+					<Image class="left-right-padding" src="file://{images}/icons/ui/info.svg" texturewidth="32" textureheight="32" />
+					<Label id="JsInvEmptyListerLabel" class="inv-category__empty-list-text" text="" />
+				</Panel>
+			</Panel>
+		</snippet>
+		<snippet name="TournamentSection">
+			<Panel class="store-home-section">
+				<Panel id="tournament-section-background" class="store-home-background" />
+				<Panel class="store-home-popular__info">
+					<Label class="store-home-section__title stratum-regular-condensed fontSize-xl" text="{s:tournament_name}" />
+				</Panel>
+			</Panel>
+		</snippet>
+	</snippets>
+	<Panel class="mainmenu-content__container" useglobalcontext="true" registerforreadyevents="true">
+		<Panel class="content-navbar">
+			<Label id="" class="content-navbar__title" text="#StoreScaleform_Title"/>
+		</Panel>
+		<Panel id="id-mainmenu-store" class="full-width full-height top-bottom-flow" hittest="false">
+			<Panel id="id-mainmenu-store-tabs" class="content-navbar content-navbar--short">
+				<Panel class="content-navbar__tabs">
+					<RadioButton id="id-store-nav-home" group="store-top-nav" onactivate="MainMenuStore.NavigateToTab( 'id-store-page-home' );">
+						<Label text="#store_tab_store" />
+					</RadioButton>
+					<Panel id="id-store-lister-tabs" class="left-right-flow vertical-center horizontal-center full-height" />
+				</Panel>
+			</Panel>
+			<Panel id="id-store-pages" class="full-width full-height">
+				<Panel id="id-store-page-home" class="inv-category">
+					<Panel class="store-home-container">
+						<Panel id="id-store-home-section-coupons" class="store-home-section">
+							<Panel class="store-home-popular__info">
+								<Label class="store-home-section__title stratum-regular-condensed fontSize-xxl" text="#store_tab_newstore" />
+							</Panel>
+							<Panel id="id-store-popular-items" class="store-home-popular__items" />
+						</Panel>
+						<Panel id="id-store-home-section-tools" class="store-home-section">
+							<Panel class="store-home-popular__info">
+								<Label class="store-home-section__title stratum-regular-condensed fontSize-xxl" text="#Inv_Category_tools" />
+							</Panel>
+							<Panel id="id-store-tools-items" class="store-home-popular__items" />
+						</Panel>
+					</Panel>
+				</Panel>
+				<Panel id="id-store-page-tournament" class="inv-category">
+					<Panel id="id-store-page-tournament-container" class="store-home-container">
+						
+					</Panel>
+				</Panel>
+			</Panel>
+		</Panel>
+	</Panel>
+</root>
