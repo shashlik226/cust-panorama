@@ -817,6 +817,10 @@ var MainMenu = ( function() {
 			oSettings.playerIdx = i;
 			oSettings.isLocalPlayer = bIsSelf;
 
+			// its bad
+			if(!oSettings.vanityData)
+				continue;
+
 			// need be sure, maybe m_latestVaniyData[i] not initialized
 			const bIsVanityUpdated = m_latestVaniyData[i] ? oSettings.vanityData != m_latestVaniyData[i] : true;
 			_VanityDebugMsg(bIsVanityUpdated);
