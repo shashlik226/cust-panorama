@@ -963,7 +963,6 @@ var MainMenu = ( function() {
 
 	var _SetVanityLightingBasedOnBackgroundMovie = function( vanityPanel )
 	{
-		return;
 		var backgroundMap = $.GetContextPanel().FindChildInLayoutFile( 'MainMenuMovie' ).GetAttributeString( 'data-type', 'anubis' );
 		vanityPanel.RestoreLightingState();
 

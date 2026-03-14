@@ -1,4 +1,3 @@
-/* Prettified by Source 2 Viewer 17.0.0.0 - https://valveresourceformat.github.io */
 
 @define vanity-margin-left: 8px;
 @define right-section: 172px;
@@ -7,8 +6,6 @@
 {
 	padding: 0px 4px 8px 4px;
 	background-color: rgba(0, 0, 0, 0.5);
-	horizontal-align: center_nopixelsnap;
-	vertical-align: center_nopixelsnap;
 	flow-children: down;
 	horizontal-align: center;
 	vertical-align: bottom;
@@ -28,7 +25,6 @@
 .vanity-xp-prestige
 {
 	background-color: gradient( linear, 0% 0%, 100% 0%, from( #3a863d ), to( #2d682f ) );
-	box-shadow: shadowOffset;
 	flow-children: right;
 	horizontal-align: center;
 	width:78px;
@@ -103,8 +99,6 @@
 	max-width: 212px;
 	letter-spacing: 0;
 	font-size: 14px;
-	padding: 0;
-	margin: 0;
 	color: white;
 	horizontal-align: center;
 	transition-property: color;
@@ -125,7 +119,8 @@
 {
 	flow-children: down;
 	vertical-align: center;
-	height: 64px padding: 0px 8px 0px 0px;
+	height: 64px;
+	padding: 0px 8px 0px 0px;
 }
 
 .no-valid-xp .vanity-info-name-xp-container
@@ -145,19 +140,6 @@
 	width: 38px;
 	horizontal-align: center;
 	img-shadow: 1px 1px 4px #000000;
-}
-
-#jsHonorIcon
-{
-	img-shadow: none;
-	horizontal-align: center;
-	vertical-align: center;
-	height:18px;
-	width: height-percentage(100%);
-	margin-right: 2px;
-	transition-property: wash-color;
-	transition-duration: .2s;
-	transition-timing-function: ease-in-out;
 }
 
 .vanity-info-xp-bar-container,.vanity-info-name-bar-container
@@ -227,7 +209,6 @@
 	horizontal-align: center_nopixelsnap;
 	vertical-align: center_nopixelsnap;
 	padding: 2px 0px 0px 4px;
-	opacity-mask: url("file://{images}/masks/fade-right.png");
 }
 
 .vanity-info-container:hover

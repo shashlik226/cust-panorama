@@ -244,7 +244,7 @@
 						</RadioButton>
 
 						<RadioButton id="MainMenuNavBarStore"
-									class="mainmenu-navbar__btn-small MainMenuModeOnly"
+									class="mainmenu-navbar__btn-small"
 									group="NavBar"
 									onactivate="MainMenu.NavigateToTab('JsMainMenuStore', 'store/store_main');"
 									onmouseover="UiToolkitAPI.ShowTextTooltip( 'MainMenuNavBarStore', '#StoreScaleform_Title' );"
