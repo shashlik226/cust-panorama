@@ -9,16 +9,16 @@
     </scripts>
 
     <Panel hittest="false" hittestchildren="true" useglobalcontext="true">
-        <Image id="vanity-crown-icon" class="vanity-info-crown-icon" src="file://{images}/icons/ui/lobby_leader.svg" />
+        <Image id="vanity-crown-icon" class="vanity-info-crown-icon" src="file://{images}/icons/ui/leader.svg" />
         
         <Panel class="left-right-flow horizontal-center bottom-margin">
-            <Label id="JsPlayerName" class="stratum-medium-condensed fontSize-ml fontcolor-white vanity-info-name" text="{s:player_name}" />
+            <Label id="JsPlayerName" class="fontSize-ml fontcolor-white vanity-info-name" text="{s:player_name}" />
         </Panel>
 
         <Button id="vanity-xp-prestige" class="vanity-xp-prestige hidden">
             <Panel class="left-right-flow horizontal-center">
                 <Image class="vanity-xp-prestige-icon" textureheight="12" texturewidth="-1" src="file://{images}/icons/ui/bomb_arrow_segment.svg" />
-                <Label html="true" class="stratum-medium-condensed vanity-xp-prestige-label" text="#SFUI_Redeem_Service_Medal" />
+                <Label html="true" class="vanity-xp-prestige-label" text="#SFUI_Redeem_Service_Medal" />
             </Panel>
         </Button>
 

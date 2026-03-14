@@ -101,9 +101,12 @@
 {
 	max-height: 24px;
 	max-width: 212px;
+	letter-spacing: 0;
+	font-size: 14px;
+	padding: 0;
+	margin: 0;
 	color: white;
-	horizontal-align:center;
-	opacity-mask: url("file://{images}/masks/fade-right.png");
+	horizontal-align: center;
 	transition-property: color;
 	transition-duration: .2s;
 	transition-timing-function: ease-in-out;
