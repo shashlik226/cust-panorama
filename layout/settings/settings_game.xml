@@ -38,17 +38,10 @@
 				<RadioButton onactivate="SettingsMenuShared.ScrollToId('SettingsCrosshair')" group="SettingsGame">
 					<Label text="#settings_crosshair"/>
 				</RadioButton>
-				    
-				                                                                                                            
-					                                              
-				              
-				   
 			</Panel>
 		</Panel>
 
 		<Panel class="SettingsMenuTabContent vscroll">
-
-			                              
 
 			<Panel id="SettingsGameSettings" class="SettingsBackground">
 				<Panel class="SettingsSectionTitleContianer">
@@ -56,7 +49,6 @@
 				</Panel>
 			
 				<Panel class ="top-bottom-flow full-width">
-					                                       
 					<Panel class="SettingsMenuDropdownContainer">
 						<Label text="#SFUI_Settings_Enable_Game_Instructor" class="half-width"/>
 						<CSGOSettingsEnumDropDown class="PopupButton White" convar="gameinstructor_enable">
@@ -66,13 +58,6 @@
 					</Panel>
 					<Panel class="horizontal-separator"/>
 
-					                            
-					<TooltipPanel class="SettingsMenuDropdownContainer" tooltip="#SFUI_Settings_Match_Ping_Threshold_Info">
-						<CSGOSettingsSlider text="#SFUI_Settings_Match_Ping_Threshold" max="350" min="25" convar="mm_dedicated_search_maxping"/>
-					</TooltipPanel>
-					<Panel class="horizontal-separator"/>
-
-					                          
 					<TooltipPanel class="SettingsMenuDropdownContainer" tooltip="#SFUI_Settings_Network_Bandwidth_Info">
 						<Label text="#SFUI_Settings_Network_Bandwidth" class="half-width"/>
 						<CSGOSettingsEnumDropDown class="PopupButton White" convar="rate">

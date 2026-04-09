@@ -95,12 +95,12 @@ function OnPopupCustomLayoutWeaponUpdate()
     ClearPopupsText();
     
     var defIndex = 23;
-    UiToolkitAPI.ShowCustomLayoutPopupParameters(
-        '',
-        'file://{resources}/layout/popups/popup_weapon_update.xml',
-        defIndex,
-        'none'
-    );
+	UiToolkitAPI.ShowCustomLayoutPopupParameters(
+		'',
+		'file://{resources}/layout/popups/popup_weapon_update.xml',
+		'defindex=' + defIndex,
+		'none'
+	);
 }
 
 function OnPopupCustomLayoutOpFull()
@@ -136,13 +136,26 @@ function OnPopupCustomLayoutXpGrant()
 
 function OnPopupCustomLayoutOperationHub ( startPage )
 {
-	var nActiveSeason = GameTypesAPI.GetActiveSeasionIndexValue();
-	if ( nActiveSeason < 0 )
-		return;
+	var nActiveSeason = 11;
 
     var elPanel = UiToolkitAPI.ShowCustomLayoutPopupParameters(
         '',
         'file://{resources}/layout/operation/operation_main.xml',
+		'none'
+	);
+
+	elPanel.SetAttributeInt( "season_access", nActiveSeason );
+	if ( startPage )
+		elPanel.SetAttributeInt( "start_page", startPage );
+}
+
+function OnPopupCustomLayoutOperationStore ( startPage )
+{
+	var nActiveSeason = 11;
+
+    var elPanel = UiToolkitAPI.ShowCustomLayoutPopupParameters(
+        '',
+        'file://{resources}/layout/operation/operation_store.xml',
 		'none'
 	);
 
@@ -441,7 +454,7 @@ function SetCanvasDrawColorT()
 {
     var canvas = $( '#Canvas1' );
 
-    canvas.SetDrawColorJS( 'orange' );
+    canvas.SetDrawColorJS( '#d89a14' );
 }
 
 function ClearCanvas()

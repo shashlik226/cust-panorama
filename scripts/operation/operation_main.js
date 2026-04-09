@@ -21,6 +21,7 @@ var OperationMain = ( function()
 		{
 			$.Schedule( .3, OperationUtil.OpenUpSell );
 		}
+		StoreAPI.RecordUIEvent( "OperationJournal_View" );
 	};
 
 	var _CheckUsersOperationStatus = function()
@@ -250,7 +251,7 @@ var OperationMain = ( function()
 			{
 				elTile.FindChildInLayoutFile( 'id-op-reward-image' ).SetImage( 'file://{images}' + aTiles[ i ].rewardsData[ 0 ].imagePath + '.png' );
 			}
-			else
+			else if ( aTiles[ i ].rewardId != undefined )
 			{
 				elTile.FindChildInLayoutFile( 'id-op-reward-image' ).itemid = aTiles[ i ].rewardId;
 			}
@@ -271,18 +272,16 @@ var OperationMain = ( function()
 
 	var _GetRewardsForTiles = function()
 	{
-		var aRewards = OperationUtil.GetRewardsData();
+		var aRewards = OperationUtil.GetRewardsDataOPMain();
 		var aTiles = [];
 
 		for ( var i = _m_oProgressFlipModule.oData.oCallbackData.sectionStart;
-			i < _m_oProgressFlipModule.oData.oCallbackData.sectionEnd;
+			i < aRewards.length;
 			i++ )
 		{
 			if ( aRewards[ i ].isGap !== "none" )
 			{
 				var rewardId = aRewards[ i ].itempremium.ids[ 0 ];
-
-				                                                                     
 
 				if ( !aTiles.find( tile =>
 				{
@@ -293,7 +292,7 @@ var OperationMain = ( function()
 						rewardId: rewardId,
 						rewardsData: aRewards.filter( reward =>
 							( reward.idx >= _m_oProgressFlipModule.oData.oCallbackData.sectionStart &&
-							reward.idx <= _m_oProgressFlipModule.oData.oCallbackData.sectionEnd ) &&
+							reward.idx <= aRewards.length ) &&
 							reward.itempremium.ids[ 0 ] === rewardId )
 					} );
 				}
@@ -451,7 +450,7 @@ var OperationMain = ( function()
 	var _GetRewardToHighlight = function( rewardTohighlightIndex )
 	{
 		                                                                                         
-		var oRewards = OperationUtil.GetRewardsData();
+		var oRewards = OperationUtil.GetRewardsDataOPMain();
 		var count = oRewards.length;
 
 		if ( rewardTohighlightIndex > -1 )
@@ -473,10 +472,10 @@ var OperationMain = ( function()
 
 	var _GetRewardsInRange = function()
 	{
-		var oAllRewards = OperationUtil.GetRewardsData();
+		var oAllRewards = OperationUtil.GetRewardsDataOPMain();
 		var aGetRewardsInRange = oAllRewards.filter( reward => !reward.isGap  &&
 			( reward.idx >= _m_oProgressFlipModule.oData.oCallbackData.sectionStart &&
-			reward.idx <= _m_oProgressFlipModule.oData.oCallbackData.sectionEnd ) 
+			reward.idx <= oAllRewards.length ) 
 		);
 		
 		return aGetRewardsInRange;
@@ -518,7 +517,7 @@ var OperationMain = ( function()
 			{
 				elReward.FindChildInLayoutFile( 'id-op-progressbar-reward-image' ).SetImage( 'file://{images}' + reward.imagePathThumbnail + '.png' );
 			}
-			else
+			else if ( reward.itempremium.ids[ 0 ] != undefined )
 			{
 				elReward.FindChildInLayoutFile( 'id-op-progressbar-reward-image' ).itemid = reward.itempremium.ids[ 0 ];
 			}
@@ -616,6 +615,19 @@ var OperationMain = ( function()
 		
 		                                                               
 		$.Schedule( .3, _UpdateInspectPanel );
+
+		                                               
+		if ( bTrackStats )
+		{
+			if ( elSelected.Data().nCategoryButtonIdx !== undefined )
+			{
+				StoreAPI.RecordUIEvent( "OperationJournal_RewardTrackSelection_Category", elSelected.Data().nCategoryButtonIdx );
+			}
+			else
+			{
+				StoreAPI.RecordUIEvent( "OperationJournal_RewardTrackSelection_Individual", elSelected.Data().oReward.idx );
+			}
+		}
 	};
 
 	var _SetActiveReward = function( elSelected )

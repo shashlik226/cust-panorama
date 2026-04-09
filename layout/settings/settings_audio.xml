@@ -39,13 +39,6 @@
 					<CSGOSettingsSlider text="#SFUI_Settings_Music_Volume_InOverlay" max="1" min="0" percentage="true" convar="snd_musicvolume_multiplier_inoverlay"/>
 					<Panel class="horizontal-separator"/>
 
-					                           
-					<Panel class="SettingsMenuDropdownContainer">
-						<CSGOSettingsSlider text="Main Menu Ambience Volume" max="1" min="0" percentage="true" convar="voice_caster_scale"/>
-					</Panel>
-					<Panel class="horizontal-separator"/>
-
-					                                   
 					<TooltipPanel class="SettingsMenuDropdownContainer" tooltip="#SFUI_Settings_Audio_Device_Tip">
 						<Label text="#SFUI_Settings_Speaker_Config" class="half-width"/>
 						<CSGOSettingsEnumDropDown id ="SpeakerConfigurationEnum" class="PopupButton White" convar="snd_surround_speakers" oninputsubmit="CSGOSpeakerConfigurationChanged()">

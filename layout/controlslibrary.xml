@@ -246,23 +246,26 @@
 						<Button class="PopupButton" onactivate="OnPopupCustomLayoutMatchAccept()">
 							<Label text="Accept Match"/>
 						</Button>
-						<Button class="PopupButton" onactivate="OnPopupCustomLayoutLoadingScreen()">
+						<!-- <Button class="PopupButton" onactivate="OnPopupCustomLayoutLoadingScreen()">
 							<Label text="Team Seclect"/>
-						</Button>
+						</Button> -->
 						<Button class="PopupButton" onactivate="OnPopupCustomLayoutWeaponUpdate()">
 							<Label text="New Weapon"/>
 						</Button>
 						<Button class="PopupButton" onactivate="OnPopupCustomLayoutOpFull()">
 							<Label text="Operatation Fullscreen Launch"/>
 						</Button>
-						<Button class="PopupButton" onactivate="OnPopupCustomLayoutSurvivalEndOfMatch()">
+						<!-- <Button class="PopupButton" onactivate="OnPopupCustomLayoutSurvivalEndOfMatch()">
 							<Label text="Survival End Of Match"/>
-						</Button>
+						</Button> -->
 						<Button class="PopupButton" onactivate="OnPopupCustomLayoutXpGrant()">
 							<Label text="Xp Grant"/>
 						</Button>
 						<Button class="PopupButton" onactivate="OnPopupCustomLayoutOperationHub()">
 							<Label text="Operation Hub"/>
+						</Button>
+						<Button class="PopupButton" onactivate="OnPopupCustomLayoutOperationStore()">
+							<Label text="Operation Store"/>
 						</Button>
 					</Panel>
 					

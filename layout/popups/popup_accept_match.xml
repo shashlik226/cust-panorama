@@ -36,7 +36,7 @@
 	<PopupCustomLayout class="accept-match Hidden" 
 					popupbackground="dim" 
 					onload="PopupAcceptMatch.Init();"
-					oncancel="">                                                                                                        
+					>                                                                                                        
 		<Panel class="chat-panel-outer" >
 			<Panel id="id-accept-match-chat-container" class="chat-panel"/>
 		</Panel>
