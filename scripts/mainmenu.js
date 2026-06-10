@@ -26,6 +26,22 @@ var MainMenu = ( function() {
 
 	let nNumNewSettings = UpdateSettingsMenuAlert();
 
+	var backgroundMaps = [
+		"ancient",
+		"anubis",
+		"blacksite",
+		"cbble",
+		"nuke",
+		"sirocco_night",
+		"vertigo",
+		"apollo",
+		"engage",
+		"mutiny",
+		"swamp",
+		"guard",
+		"sirocco"
+	];
+
 	function UpdateSettingsMenuAlert()
 	{ 
 		let elNewSettingsAlert = $( "#MainMenuSettingsAlert" );
@@ -95,7 +111,10 @@ var MainMenu = ( function() {
 		if ( !( videoPlayer && videoPlayer.IsValid() ) )
 			return;
 	
-		var backgroundMovie = GameInterfaceAPI.GetSettingString( 'ui_mainmenu_bkgnd_movie' );
+		var backgroundMovie = GameInterfaceAPI.GetSettingString( 'ui_mainmenu_bkgnd_movie_CC4ECB9' );
+
+		if(backgroundMovie == 'random')
+			backgroundMovie = backgroundMaps[Math.floor(Math.random() * backgroundMaps.length)];
 
 		videoPlayer.SetAttributeString( 'data-type', backgroundMovie );
 		videoPlayer.SetMovie( "file://{resources}/videos/" + backgroundMovie + ".webm" );
@@ -110,7 +129,6 @@ var MainMenu = ( function() {
 		GameInterfaceAPI.SetSettingString( 'dsp_room', '29' );
 		GameInterfaceAPI.SetSettingString( 'snd_soundmixer', 'MainMenu_Mix' );
 
-		_m_bVanityAnimationAlreadyStarted = false;
 		_InitVanity();
 		_OnInitFadeUp();
 		_SetBackgroundMovie();
@@ -432,6 +450,9 @@ var MainMenu = ( function() {
 			_m_elContentPanel.RemoveClass( 'mainmenu-content--offscreen' );
 		}
 
+		$('#MainMenuVanityInfo').SetHasClass( 'hidden', true );
+		$('#JsMainMenuRightColumn').SetHasClass( 'hidden', true );
+
 		$.DispatchEvent( 'ShowContentPanel' );
 		_DimMainMenuBackground( false );
 		// _HideNewsAndStore();
@@ -457,6 +478,8 @@ var MainMenu = ( function() {
 		_m_activeTab = '';
 
 		// _ShowNewsAndStore();
+		$('#MainMenuVanityInfo').SetHasClass( 'hidden', false );
+		$('#JsMainMenuRightColumn').SetHasClass( 'hidden', false );
 	};
 
 	var _GetActiveNavBarButton = function( )
@@ -760,13 +783,19 @@ var MainMenu = ( function() {
 		if ( _m_bVanityAnimationAlreadyStarted ) {
 			return;
 		}
+		
+		let vanityPanel = $('#MainMenuVanityPlayers');
+		vanityPanel.CreateSceneContexts( 5 );
+		_VanityDebugMsg("Created scene contexts for vanity");
 
 		m_latestVaniyData = {};
 		_LobbyPlayerUpdated();
+		_m_bVanityAnimationAlreadyStarted = true;
 	};
 
 	function _LobbyPlayerUpdated()
 	{
+		_VanityDebugMsg("_LobbyPlayerUpdated executed");
 		_HideVanityPanels();
 
 		let partySize = PartyListAPI.GetCount();
@@ -785,7 +814,7 @@ var MainMenu = ( function() {
         ].join(',');
 
 		if(!PartyListAPI.IsPartySessionActive()) {
-			if(!$('#MainMenuVanityPlayer0')) //nonoonon
+			if(!$('#MainMenuVanityPlayers')) //nonoonon
 				return;
 
 			_VanityDebugMsg('Party is not active, using locally vanity');
@@ -800,6 +829,8 @@ var MainMenu = ( function() {
 
 			a_currentVaniyData[0] = _CreateVanitySettings(oSettings);
 			m_latestVaniyData[0] = oSettings.vanityData;
+
+			_VanityDebugMsg("Vanity data of 0: "+m_latestVaniyData[0]);
 
 			if(bIsVanityUpdated)
 				_UpdateOrCreateVanityPanel( 0, a_currentVaniyData[0] );
@@ -823,10 +854,12 @@ var MainMenu = ( function() {
 
 			// need be sure, maybe m_latestVaniyData[i] not initialized
 			const bIsVanityUpdated = m_latestVaniyData[i] ? oSettings.vanityData != m_latestVaniyData[i] : true;
-			_VanityDebugMsg(bIsVanityUpdated);
+			_VanityDebugMsg("vanity "+i+" updated: "+bIsVanityUpdated);
 		
 			a_currentVaniyData[i] = _CreateVanitySettings(oSettings);
 			m_latestVaniyData[i] = oSettings.vanityData;
+
+			_VanityDebugMsg("Vanity data of "+i+": "+m_latestVaniyData[i]);
 
 			if(bIsSelf && bIsVanityUpdated)
 				_ApplyVanitySettingsToLobbyMetadata(oSettings);
@@ -843,32 +876,28 @@ var MainMenu = ( function() {
 			_VanityDebugMsg('Warning! Player'+playerIdx+' not found in m_currentVaniyData, aborting');
 			return;
 		}
-		let vanityPanel = $('#MainMenuVanityPlayer'+playerIdx);
+		let vanityPanel = $('#MainMenuVanityPlayers');
 		if(!vanityPanel) {
-			_VanityDebugMsg('_UpdateOrCreateVanityPanel::Panel MainMenuVanityPlayer'+playerIdx+' not exists.');
+			_VanityDebugMsg('_UpdateOrCreateVanityPanel::Panel MainMenuVanityPlayers not exists.');
 			return;
 		}
 
 		oSettings.activity = 'ACT_CSGO_UIPLAYER_WALKUP';
 		oSettings.arrModifiers.push( 'vanity' );
 		oSettings.panel = vanityPanel;
-		vanityPanel.SetSceneAngles( 0, 0, 0, true );
-		vanityPanel.hittest = false;
 
-		CharacterAnims.PlayAnimsOnPanel( oSettings );
-		_SetVanityLightingBasedOnBackgroundMovie( vanityPanel );
-		
-		if ( oSettings.panel.BHasClass( 'vanity-hidden' ) ) {
-			oSettings.panel.RemoveClass( 'vanity-hidden' );
-		}
+		CharacterAnims.PlayAnimsOnPanel( oSettings, false, true, playerIdx );
+		_SetVanityLightingBasedOnBackgroundMovie( vanityPanel, playerIdx );
+
+		vanityPanel.UpdateFocusInContext();
 	}
 
 	// start credits to Deformisani SAS
 	function _UpdateVanityInfoPanel( playerIdx, oSettings )
 	{
-		let vanityPanel = $('#MainMenuVanityPlayer'+playerIdx);
+		let vanityPanel = $('#MainMenuVanityInfo');
 		if(!vanityPanel) {
-			_VanityDebugMsg('_UpdateVanityInfoPanel::Panel MainMenuVanityPlayer'+playerIdx+' not exists.');
+			_VanityDebugMsg('_UpdateVanityInfoPanel::Panel MainMenuVanityInfo not exists.');
 			return;
 		}
 
@@ -883,6 +912,8 @@ var MainMenu = ( function() {
 			_VanityDebugMsg('Creating panel '+vanityInfoPanelId);
 
             _TrackVanityBone(elVanityInfoPanel, playerIdx);
+
+			$('#MainMenuBackground').AddBlurPanel(elVanityInfoPanel.FindChildInLayoutFile('vanity-info-container'));
         }
 
         VanityPlayerInfo.CreateOrUpdateVanityInfoPanel(elVanityInfoPanel, oSettings);
@@ -892,25 +923,19 @@ var MainMenu = ( function() {
 	{
 	    if ( !elPanel || !elPanel.IsValid() ) return;
 
-	    var elVanityModel = $( '#MainMenuVanityPlayer' + index );
+	    var elVanityModel = $( '#MainMenuVanityPlayers' );
 		
 	    if ( elVanityModel ) {
-	        var elScene = elVanityModel.FindChildTraverse( 'VanityScene' ) || elVanityModel;
+	        elVanityModel.SetActiveSceneContext( index );
 
-	        if ( elScene && elScene.SetActiveSceneContext ) {
-	            elScene.SetActiveSceneContext( 0 ); 
+	        var bonePos = elVanityModel.GetBonePositionInPanelSpace( 'pelvis_0' );
 
-	            var bonePos = elScene.GetBonePositionInPanelSpace( 'pelvis_0' );
-			
-	            bonePos.y -= 115; 
-	            bonePos.x += 15; 
-
-				try {
-	            	elPanel.style.position = bonePos.x + "px " + bonePos.y + "px 0px";
-				} catch (error) {
-					_VanityDebugMsg('Can\'t set position in panel id-player-vanity-info-'+index );
-				}
-	        }
+			try {
+				bonePos.y -= 245;
+	        	VanityPlayerInfo.SetVanityInfoPanelPos($('#MainMenuVanityInfo'), index, bonePos, "id-player-vanity-info-" + index)
+			} catch (error) {
+				_VanityDebugMsg('Can\'t set position in panel id-player-vanity-info-'+index );
+			}
 	    }
 
 	    $.Schedule( 0.01, function() {
@@ -940,19 +965,19 @@ var MainMenu = ( function() {
 	function _HideVanityPanels()
 	{
 		let partySize = PartyListAPI.IsPartySessionActive() ? PartyListAPI.GetCount() : 1;
+		let vanityData = Object.keys(m_latestVaniyData).length;
+		_VanityDebugMsg('latest vanity data '+vanityData)
+		for (let i = 0; i < vanityData; i++) {
+			if(i < partySize) continue;
 
-		for (let i = 0; i < Object.keys(m_latestVaniyData).length; i++) {
-		    let vanityPanel = $('#MainMenuVanityPlayer'+i);
-		    if (!vanityPanel) continue;
+			_VanityDebugMsg('DELETING '+i)
+		    let vanityPanel = $('#MainMenuVanityPlayers');
+		    vanityPanel.SetActiveSceneContext( i );
+			vanityPanel.SetSceneModel( "models/crow.mdl" );
+	
+			VanityPlayerInfo.DeleteVanityInfoPanel($('#MainMenuVanityInfo'), i);
 
-		    let hide = i >= partySize;
-
-		    vanityPanel.SetHasClass('vanity-hidden', hide);
-
-			const vanityInfoPanelId = "id-player-vanity-info-"+i;
-			let elVanityInfoPanel = vanityPanel.FindChildInLayoutFile(vanityInfoPanelId);
-			if(elVanityInfoPanel && hide)
-				elVanityInfoPanel.DeleteAsync(0);
+			delete m_latestVaniyData[i];
 		}
 	}
 
@@ -961,8 +986,10 @@ var MainMenu = ( function() {
 		$.Msg('[VANITY DEBUG] '+msg);
 	}
 
-	var _SetVanityLightingBasedOnBackgroundMovie = function( vanityPanel )
+	var _SetVanityLightingBasedOnBackgroundMovie = function( vanityPanel, i )
 	{
+		vanityPanel.SetActiveSceneContext( i );
+		
 		var backgroundMap = $.GetContextPanel().FindChildInLayoutFile( 'MainMenuMovie' ).GetAttributeString( 'data-type', 'anubis' );
 		vanityPanel.RestoreLightingState();
 
@@ -1885,29 +1912,69 @@ var MainMenu = ( function() {
 		elVanityContextMenu.AddClass( "ContextMenu_NoArrow" );
 	}
 
-	function _RegisterKeyForDevMenu() {
-		function _ShowDevContextMenu() {
-			var items = [
-				{ label: 'ControlsLib', jsCallback: _NavigateToTab.bind( undefined, 'JSConsolsLib', 'controlslibrary' ) },
-				{ label: 'Copy GlobalObject to clipboard', jsCallback: function() {
-					var obj = UiToolkitAPI.GetGlobalObject();
-					SteamOverlayAPI.CopyTextToClipboard(JSON.stringify(obj));
-				} },
-				{ label: 'SKIN GENERATOR 3000', jsCallback: function() {
-					UiToolkitAPI.ShowCustomLayoutPopup('', 'file://{resources}/layout/popups/popup_generate_skin.xml');
-				} },
-				{ label: 'ITEM GENERATOR 3000', jsCallback: function() {
-					UiToolkitAPI.ShowCustomLayoutPopup('', 'file://{resources}/layout/popups/popup_generate_item.xml');
-				} },
-				{ label: 'Execute custom JS Code', jsCallback: function() {
-					UiToolkitAPI.ShowCustomLayoutPopup('', 'file://{resources}/layout/popups/popup_exec_js.xml');
-				} }
-			];
+	function _ShowDevContextMenu() {
+		var items = [
+			{ label: 'ControlsLib', jsCallback: _NavigateToTab.bind( undefined, 'JSConsolsLib', 'controlslibrary' ) },
+			{ label: 'Copy GlobalObject to clipboard', jsCallback: function() {
+				var obj = UiToolkitAPI.GetGlobalObject();
+				SteamOverlayAPI.CopyTextToClipboard(JSON.stringify(obj));
+			} },
+			{ label: 'SKIN GENERATOR 3000', jsCallback: function() {
+				UiToolkitAPI.ShowCustomLayoutPopup('', 'file://{resources}/layout/popups/popup_generate_skin.xml');
+			} },
+			{ label: 'ITEM GENERATOR 3000', jsCallback: function() {
+				UiToolkitAPI.ShowCustomLayoutPopup('', 'file://{resources}/layout/popups/popup_generate_item.xml');
+			} },
+			{ label: 'Execute custom JS Code', jsCallback: function() {
+				UiToolkitAPI.ShowCustomLayoutPopup('', 'file://{resources}/layout/popups/popup_exec_js.xml');
+			} },
+			{ label: 'Open popup', jsCallback: function() {
+				UiToolkitAPI.ShowCustomLayoutPopup('', 'file://{resources}/layout/popups/popup_open_popup.xml');
+			} },
+			{ label: 'Show/Hide Vanity debug', jsCallback: function() {
+				$.GetContextPanel().FindChildTraverse('vanitydebug_entrys').visible = !$.GetContextPanel().FindChildTraverse('vanitydebug_entrys').visible;
+			} },
+			{ label: 'Reload Vanity', jsCallback: function() {
+				$('#MainMenuVanityInfo').RemoveAndDeleteChildren();
+				$('#MainMenuVanityPlayers').DeleteAsync(.0);
+				let vanityPanel = $.CreatePanel('ItemPreviewPanel', $('#JsMainmenu_Vanity-Container'), "MainMenuVanityPlayers", {
+					class: 'full-width full-height',
+					manifest: 'resource/ui/econ/ItemModelPanelCharMainMenu.res',
+					item: 'models/player/custom_player/legacy/tm_phoenix.mdl',
+					mouse_rotate: false,
+					enable_floorshadow: true,
+					hittest: false
+				});
+				vanityPanel.CreateSceneContexts( 5 );
+				m_latestVaniyData = {};
+				$.Schedule( .3, _LobbyPlayerUpdated );
+			} }
+		];
 
-        	UiToolkitAPI.ShowSimpleContextMenu( '', 'DevContextMenu', items );
-		}
+    	UiToolkitAPI.ShowSimpleContextMenu( '', 'DevContextMenu', items );
+	}
+
+	function _RegisterKeyForDevMenu() {
+		
 
 		$.RegisterKeyBind($.GetContextPanel(), "key_delete", _ShowDevContextMenu);
+	}
+
+	function _DebugUpdateVanityModel() {
+		let playerIdx = $( '#vanitydebug_player' ).GetSelected().id;
+		let offset = $("#vanitydebug_offset").text.split(" ");
+		let rotation = $("#vanitydebug_rotation").text.split(" ");
+
+		let vanityPanel = $('#MainMenuVanityPlayers');
+		if(!vanityPanel) {
+			_VanityDebugMsg('_DebugUpdateVanityModel::Panel MainMenuVanityPlayers not exists.');
+			return;
+		}
+		_VanityDebugMsg('Selected for debug player: '+playerIdx);
+		vanityPanel.SetActiveSceneContext( Number(playerIdx) );
+
+		vanityPanel.SetSceneOffset(Number(offset[0]), Number(offset[1]), Number(offset[2]));
+		vanityPanel.SetSceneRotation(Number(rotation[0]), Number(rotation[1]), Number(rotation[2]));
 	}
 
 	return {
@@ -1969,7 +2036,9 @@ var MainMenu = ( function() {
 		SwitchVanity						: _SwitchVanity,
 		GoToCharacterLoadout				: _GoToCharacterLoadout,
 		OpenSubscriptionUpsell				: _OpenSubscriptionUpsell,
-		UpdateUnlockCompAlert				: _UpdateUnlockCompAlert
+		UpdateUnlockCompAlert				: _UpdateUnlockCompAlert,
+		ShowDevContextMenu					: _ShowDevContextMenu,
+		DebugUpdateVanityModel: _DebugUpdateVanityModel
 	};
 })();
 

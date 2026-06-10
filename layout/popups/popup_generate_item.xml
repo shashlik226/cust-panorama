@@ -63,12 +63,18 @@
 		{
 			var itemId = $.GetContextPanel().FindChildInLayoutFile('itemIdx').GetSelected().GetAttributeString( "value", "" );
 
+			$.GetContextPanel().FindChildInLayoutFile('itemIdxField').SetHasClass('hidden', itemId != 'showfromfield');
+		
 			if(itemId == 'showfromfield')
 				itemId = $.GetContextPanel().FindChildInLayoutFile('itemIdxField').text;
 
-			$.GetContextPanel().FindChildInLayoutFile('itemIdxField').SetHasClass('hidden', itemId != 'showfromfield');
 
 			return itemId;
+		}
+
+		function CopyItemID()
+		{
+			SteamOverlayAPI.CopyTextToClipboard( InventoryAPI.GetFauxItemIDFromDefAndPaintIndex( GetSelectedItemId(), 0 ) );
 		}
 
 		function FillItems()
@@ -116,6 +122,7 @@
 			</Panel>
 		</Panel>
 		<Panel class="PopupButtonRow">
+			<TextButton class="PopupButton" text="COPY ITEMID" onactivate="CopyItemID()" />
 			<TextButton class="PopupButton" text="#UI_Inspect" onactivate="Inspect()" />
 			<!-- <TextButton class="PopupButton" text="#UI_Submit" onactivate="CreateItem()" /> -->
 			<TextButton class="PopupButton" text="#UI_Cancel" onactivate="$.DispatchEvent( 'UIPopupButtonClicked', '' );" />

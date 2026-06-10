@@ -62,12 +62,22 @@
 		{
 			var skinId = $.GetContextPanel().FindChildInLayoutFile('skinIdx').GetSelected().GetAttributeString( "value", "" );
 
+			$.GetContextPanel().FindChildInLayoutFile('skinIdxField').SetHasClass('hidden', skinId != 'showfromfield');
+
 			if(skinId == 'showfromfield')
 				skinId = $.GetContextPanel().FindChildInLayoutFile('skinIdxField').text;
 
-			//$.GetContextPanel().FindChildInLayoutFile('skinIdxField').SetHasClass('hidden', skinId != 'showfromfield');
 
 			return skinId;
+		}
+
+		function CopyItemID()
+		{
+			var weaponIdx = $.GetContextPanel().FindChildInLayoutFile('Weaponidx').GetSelected().GetAttributeString( "value", "" );
+            var skinIdx = GetSelectedSkinId();
+
+			var itemId = InventoryAPI.GetFauxItemIDFromDefAndPaintIndex( weaponIdx, skinIdx );
+			SteamOverlayAPI.CopyTextToClipboard( itemId );
 		}
 		
 		function FillItems()
@@ -143,6 +153,8 @@
 				<Label text="#SFUI_WPNHUD_m249" id="weapon_m249" value="14"/>
 				<Label text="#SFUI_WPNHUD_negev" id="weapon_negev" value="28"/>
 				<Label text="#SFUI_WPNHUD_c4" id="weapon_c4" value="49"/>
+				<Label text="Knife CT" id="weapon_knife" value="42"/>
+				<Label text="Knife T" id="weapon_knife_t" value="59"/>
 				<Label text="#SFUI_WPNHUD_KnifeBayonet" id="weapon_bayonet" value="500"/>
 				<Label text="#SFUI_WPNHUD_KnifeFlip" id="weapon_knife_flip" value="505"/>
 				<Label text="#SFUI_WPNHUD_KnifeGut" id="weapon_knife_gut" value="506"/>
@@ -172,10 +184,11 @@
 				<Label text="Custom" id="showfromfield" value="showfromfield"/>
 			</DropDown>
     		<TextEntry maxchars="4" textmode="numeric" id="skinIdxField" placeholder="SkinId Default: 2" ontextentrychange="UpdateWeaponPreview()"/>
-    		<TextEntry maxchars="4" textmode="numeric" id="seedIdx" placeholder="Seed Default: Random"/>
+    		<TextEntry maxchars="4" textmode="numeric" id="seedIdx" placeholder="Seed Default: Random" class="hidden" />
 		</Panel>
 	</Panel>
 	<Panel class="PopupButtonRow">
+		<TextButton class="PopupButton" text="COPY ITEMID" onactivate="CopyItemID()" />
 		<TextButton class="PopupButton" text="#UI_Inspect" onactivate="Inspect()" />
 		<!-- <TextButton class="PopupButton" text="#UI_Submit" onactivate="CreateItem()" /> -->
 		<TextButton class="PopupButton" text="#UI_Cancel" onactivate="$.DispatchEvent( 'UIPopupButtonClicked', '' );" />

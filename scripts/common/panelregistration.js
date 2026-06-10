@@ -15,4 +15,5 @@
 
                                     
     UiToolkitAPI.RegisterPanel2d( 'ControlLibTestPanel', 'file://{resources}/layout/tests/controllibtestpanel.xml' );
+    UiToolkitAPI.RegisterPanel2d( 'ServerBrowser', 'file://{resources}/layout/server_browser/server_browser.xml' );
 })();

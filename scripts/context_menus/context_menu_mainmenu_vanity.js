@@ -69,11 +69,23 @@ var MainMenuVanityContextMenu = ( function()
 		                                   
 		  
 		var list = ItemInfo.GetLoadoutWeapons( team );
+		
+		var moreItems = [
+			'17293822569102704677',
+			'17293822569102704688',
+			'17293822569102704686',
+			'17293822569102704687',
+			'17293822569102704683',
+			'17293822569102704684',
+			'17293822569102704685',
+			'17293822569102704690',
+			'17293822569102704691'
+		];
 
 		if ( list && list.length > 0 )
 		{
 
-			list.forEach( function( entry )
+			list.concat(moreItems).forEach( function( entry )
 			{
 				var elItem = $.CreatePanel( 'Button', elContextMenuBodyWeapons, entry );
 				elItem.BLoadLayoutSnippet( 'snippet-vanity-item' );

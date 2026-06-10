@@ -17,6 +17,12 @@
 				<RadioButton onactivate="SettingsMenuShared.ScrollToId('SettingsGameSettings')" group="SettingsGame">
 					<Label text="#settings_game_settings_section"/>
 				</RadioButton>
+				<RadioButton onactivate="SettingsMenuShared.ScrollToId('SettingsNetGraph')" group="SettingsGame">
+					<Label text="NetGraph"/>
+				</RadioButton>
+				<RadioButton onactivate="SettingsMenuShared.ScrollToId('SettingsViewmodel')" group="SettingsGame">
+					<Label text="Viewmodel"/>
+				</RadioButton>
 				<RadioButton onactivate="SettingsMenuShared.ScrollToId('SettingsHudSettings')" group="SettingsGame">
 					<Label text="#settings_hud_section"/>
 				</RadioButton>
@@ -101,6 +107,95 @@
 				</Panel>
 			</Panel>
 
+			<Panel id="SettingsNetGraph" class="SettingsBackground">
+				<Panel class="SettingsSectionTitleContianer">
+					<Label class="SettingsSectionTitleLabel" text="#ol_settings_netgraph" />
+				</Panel>
+			
+				<Panel class ="top-bottom-flow full-width">
+
+					<Panel class="SettingsMenuDropdownContainer">
+						<Label text="Enable" class="half-width"/>
+						<CSGOSettingsEnumDropDown class="PopupButton White" convar="net_graph">
+							<Label text="#GameUI_Yes" id="netgraph0" value="1"/>
+							<Label text="#GameUI_No"  id="netgraph1" value="0" />
+						</CSGOSettingsEnumDropDown>
+					</Panel>
+					<Panel class="horizontal-separator"/>
+
+					<Panel class="SettingsMenuDropdownContainer">
+						<CSGOSettingsSlider text="Height" max="1100" min="0" displayprecision="0" convar="net_graphheight"/>
+					</Panel>
+					<Panel class="horizontal-separator"/>
+
+					<Panel class="SettingsMenuDropdownContainer">
+						<Label text="Position" class="half-width"/>
+						<CSGOSettingsEnumDropDown class="PopupButton White" convar="net_graphpos">
+							<Label text="Right"  id="netgraph1" value="1" />
+							<Label text="Center" id="netgraph2" value="2"/>
+							<Label text="Left"  id="netgraph3" value="3" />
+						</CSGOSettingsEnumDropDown>
+					</Panel>
+					<Panel class="horizontal-separator"/>
+
+					<Panel class="SettingsMenuDropdownContainer">
+						<Label text="Font Size" class="half-width"/>
+						<CSGOSettingsEnumDropDown class="PopupButton White" convar="net_graphproportionalfont">
+							<Label text="Big"  id="netgraph1" value="1" />
+							<Label text="Small" id="netgraph0" value="0"/>
+						</CSGOSettingsEnumDropDown>
+					</Panel>
+
+				</Panel>
+			</Panel>
+
+			<Panel id="SettingsViewmodel" class="SettingsBackground">
+				<Panel class="SettingsSectionTitleContianer">
+					<Label class="SettingsSectionTitleLabel" text="#ol_settings_viewmodel" />
+				</Panel>
+				<Panel class ="top-bottom-flow full-width">
+
+					<Panel class="SettingsMenuDropdownContainer">
+						<Label text="#SFUI_Settings_ViewmodelPos" class="half-width"/>
+						<CSGOSettingsEnumDropDown class="PopupButton White" convar="viewmodel_presetpos">
+							<Label text="#SFUI_Settings_ViewmodelPosDesktop" value="1" id ="viewmodelpreset0"/>
+							<Label text="#SFUI_Settings_ViewmodelPosCouch" value="2" id ="viewmodelpreset1"/>
+							<Label text="#SFUI_Settings_ViewmodelPosClassic" value="3" id ="viewmodelpreset2"/>
+							<Label text="#SFUI_GameModeCustom" value="4" id ="viewmodelpreset4"/>
+						</CSGOSettingsEnumDropDown>
+					</Panel>
+					<Panel class="horizontal-separator"/>
+
+					<Panel class="SettingsMenuDropdownContainer">
+						<Label text="Hand Position" class="half-width"/>
+						<CSGOSettingsEnumDropDown class="PopupButton White" convar="cl_righthand">
+							<Label text="Left" value="0" id ="viewmodelpreset0"/>
+							<Label text="Right" value="1" id ="viewmodelpreset1"/>
+						</CSGOSettingsEnumDropDown>
+					</Panel>
+					<Panel class="horizontal-separator"/>
+
+					<Panel class="SettingsMenuDropdownContainer">
+						<CSGOSettingsSlider text="Offset by X" max="2.5" min="-2" displayprecision="2" convar="viewmodel_offset_x"/>
+					</Panel>
+					<Panel class="horizontal-separator"/>
+
+					<Panel class="SettingsMenuDropdownContainer">
+						<CSGOSettingsSlider text="Offset by Y" max="2" min="-2" displayprecision="2" convar="viewmodel_offset_y"/>
+					</Panel>
+					<Panel class="horizontal-separator"/>
+
+					<Panel class="SettingsMenuDropdownContainer">
+						<CSGOSettingsSlider text="Offset by Z" max="2" min="-2" displayprecision="2" convar="viewmodel_offset_z"/>
+					</Panel>
+					<Panel class="horizontal-separator"/>
+
+					<Panel class="SettingsMenuDropdownContainer">
+						<CSGOSettingsSlider text="FOV" max="68" min="54" displayprecision="2" convar="viewmodel_fov"/>
+					</Panel>
+					
+				</Panel>
+			</Panel>
 			                             
 
 			<Panel id="SettingsHudSettings" class="SettingsBackground">
@@ -480,16 +575,6 @@
 					</Panel>
 					<Panel class="horizontal-separator"/>
 					
-					                         
-					<Panel class="SettingsMenuDropdownContainer">
-						<Label text="#SFUI_Settings_ViewmodelPos" class="half-width"/>
-						<CSGOSettingsEnumDropDown class="PopupButton White" convar="viewmodel_presetpos">
-							<Label text="#SFUI_Settings_ViewmodelPosDesktop" value="1" id ="viewmodelpreset0"/>
-							<Label text="#SFUI_Settings_ViewmodelPosCouch" value="2" id ="viewmodelpreset1"/>
-							<Label text="#SFUI_Settings_ViewmodelPosClassic" value="3" id ="viewmodelpreset2"/>
-						</CSGOSettingsEnumDropDown>
-					</Panel>
-					<Panel class="horizontal-separator"/>
 
 					                              
 					<Panel class="SettingsMenuDropdownContainer">

@@ -70,7 +70,7 @@ var CharacterAnims = ( function()
 	}
 	
 
-	var _PlayAnimsOnPanel = function ( importedSettings, bDontStompModel = false, makeDeepCopy = true )
+	var _PlayAnimsOnPanel = function ( importedSettings, bDontStompModel = false, makeDeepCopy = true, sceneContext = null )
 	{
 		  
 		                                                       
@@ -117,6 +117,21 @@ var CharacterAnims = ( function()
 		var wid = settings.weaponItemId;
 		
 		var playerPanel = settings.panel;
+
+		if(sceneContext != null) {
+			playerPanel.SetActiveSceneContext( sceneContext );
+			// z x y
+			let arr = [
+				[-80, 0, 0],
+				[-140, 35, 2],
+				[-170, -40, 2],
+				[-200, 80, 2],
+				[-200, -80, 2]
+			];
+			let offset = arr[sceneContext];
+			playerPanel.SetSceneOffset(offset[0], offset[1], offset[2]);
+		}
+
 		_CancelScheduledAnim( playerPanel );
 		_ResetLastRandomAnimHandle( playerPanel );
 		
@@ -192,7 +207,6 @@ var CharacterAnims = ( function()
 			                                                                            
 			playerPanel.SetAmbientLightColor( settings.ambientLightColor[ 0 ], settings.ambientLightColor[ 1 ], settings.ambientLightColor[ 2 ] );
 		}
-
 	};
 
 	var _CancelScheduledAnim = function ( playerPanel )

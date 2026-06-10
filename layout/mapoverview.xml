@@ -19,7 +19,7 @@
 					<Image id="HostageOnMap" class="PI_HostageOnMap" src="file://{images}/hud/radar/mapoverview/icon-hostage-on-map.png"/>
 					<Image id="HostageDeath" class="PI_Death" src="file://{images}/hud/radar/mapoverview/icon-hostage-death.png"/>
 					<Image id="HostageGhost" class="PI_Ghost" src="file://{images}/hud/radar/icon-hostage-ghost.png"/>
-`					<Image id="PlayerOnMap" class="PI_OnMap" src="file://{images}/icons/ui/map_onmap.svg"/>
+					<Image id="PlayerOnMap" class="PI_OnMap" src="file://{images}/icons/ui/map_onmap.svg"/>
 					<Image id="PlayerDeath" class="PI_Death" src="file://{images}/hud/radar/mapoverview/icon-death_black.svg"/>
 					<Image id="PlayerGhost" class="PI_Ghost" src="file://{images}/icons/ui/map_ghost.svg"/>
 					<Image id="DirectionalIndicator" scaling="stretch-to-fit-preserve-aspect" src="file://{images}/hud/radar/icon-direction-indicator.png"/>

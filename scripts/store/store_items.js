@@ -59,6 +59,8 @@ var StoreItems;
             }
         }
         GetTournamentItems();
+        MakeCategory('nightmode', [[ 7041, 7042 ], [ 7043, 7044 ], [ 7045, 7046 ], [ 7047, 7048 ], [ 7049, 7050 ], [ 7051, 7052 ]]);
+        MakeCategory('nightmode2', [[ 7029, 7030 ], [ 7033, 7034 ], [ 7031, 7032 ], [ 7035, 7036 ], [ 7038, 7037 ], [ 7040, 7039 ]]);
     }
     StoreItems.MakeStoreItemList = MakeStoreItemList;
 
@@ -130,6 +132,30 @@ var StoreItems;
         }
     }
     StoreItems.GetTournamentItems = GetTournamentItems;
+
+    function MakeCategory(name, items) {
+
+        if(!m_oItemsByCategory.hasOwnProperty(name))
+            m_oItemsByCategory[name] = [];
+
+        for (let i = 0; i < items.length; i++) {
+
+            let FauxItemId = InventoryAPI.GetFauxItemIDFromDefAndPaintIndex(items[i][0], 0);
+            let itemPrice = ItemInfo.GetStoreSalePrice(FauxItemId, 1);
+
+            let storeItem = {
+                id: FauxItemId,
+                useTinyNames: false,
+                isDisabled: !isPurchaseable(FauxItemId),
+                isNotReleased: !isPurchaseable(FauxItemId)
+            };
+
+            if(items[i].length > 1)
+                storeItem.linkedid = InventoryAPI.GetFauxItemIDFromDefAndPaintIndex(items[i][1], 0);
+
+            m_oItemsByCategory[name].push(storeItem);
+        }
+    }
 
     function warningTextTournamentItems(isPurchaseable, itemid) {
         return !isPurchaseable

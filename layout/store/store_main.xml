@@ -55,6 +55,14 @@
 				</Panel>
 			</Panel>
 		</snippet>
+		<snippet name="HomeSection">
+			<Panel class="store-home-section">
+				<Panel class="store-home-popular__info">
+					<Label class="store-home-section__title stratum-regular-condensed fontSize-l" text="{s:name}" />
+				</Panel>
+				<Panel id="store-items" class="store-home-popular__items" />
+			</Panel>
+		</snippet>
 	</snippets>
 	<Panel class="mainmenu-content__container" useglobalcontext="true" registerforreadyevents="true">
 		<Panel class="content-navbar">
@@ -63,7 +71,7 @@
 		<Panel id="id-mainmenu-store" class="full-width full-height top-bottom-flow" hittest="false">
 			<Panel id="id-mainmenu-store-tabs" class="content-navbar content-navbar--short">
 				<Panel class="content-navbar__tabs">
-					<RadioButton id="id-store-nav-home" group="store-top-nav" onactivate="MainMenuStore.NavigateToTab( 'id-store-page-home' );">
+					<RadioButton id="id-store-nav-home" group="store-top-nav" onactivate="MainMenuStore.NavigateToTab( 'id-store-page-home' );" selected="true">
 						<Label text="#store_tab_store" />
 					</RadioButton>
 					<Panel id="id-store-lister-tabs" class="left-right-flow vertical-center horizontal-center full-height" />
@@ -71,7 +79,7 @@
 			</Panel>
 			<Panel id="id-store-pages" class="full-width full-height">
 				<Panel id="id-store-page-home" class="inv-category">
-					<Panel class="store-home-container">
+					<Panel id="id-store-page-home-sections" class="store-home-container">
 						<Panel id="id-store-home-section-coupons" class="store-home-section">
 							<Panel class="store-home-popular__info">
 								<Label class="store-home-section__title stratum-regular-condensed fontSize-xxl" text="#store_tab_newstore" />

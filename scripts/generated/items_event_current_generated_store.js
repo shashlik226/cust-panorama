@@ -1,27 +1,84 @@
 
 var g_Tournaments = {
-	3: {
-		g_ActiveTournamentInfo:
-		{
-			eventid: 3,
-			itemid_pass: 4554,
-			itemid_coins: [
-				4555, 4556, 4557, 4558
-			],
-		},
-
-		g_ActiveTournamentStoreLayout:
-		[
-			[
-			4014,
-			'#CSGO_crate_store_pack_paris2023_legends_groupname'
-			],
-			[
-			4015,
-			'#CSGO_crate_store_pack_paris2023_challengers_groupname'
-			]
-		]
-	},
+	// 3: {
+	// 	g_ActiveTournamentStoreLayout:
+	// 	[
+	// 		[ 4014, '#CSGO_crate_store_pack_paris2023_legends_groupname' ],
+	// 		[ 4015, '#CSGO_crate_store_pack_paris2023_challengers_groupname' ]
+	// 	]
+	// },
+	// 4: {
+	// 	g_ActiveTournamentStoreLayout:
+	// 	[
+	// 		[ 4020, '#CSGO_crate_sticker_pack_cologne2014_01' ],
+	// 		[ 4021, '#CSGO_crate_sticker_pack_cologne2014_02' ]
+	// 	]
+	// },
+	// 5: {
+	// 	g_ActiveTournamentStoreLayout:
+	// 	[
+	// 		[ 4030, '#CSGO_crate_sticker_pack_dhw2014_01' ]
+	// 	]
+	// },
+	// 6: {
+	// 	g_ActiveTournamentStoreLayout:
+	// 	[
+	// 		[ 4086, '#CSGO_crate_sticker_pack_eslkatowice2015_01' ],
+	// 		[ 4087, '#CSGO_crate_sticker_pack_eslkatowice2015_02' ]
+	// 	]
+	// },
+	// 7: {
+	// 	g_ActiveTournamentStoreLayout:
+	// 	[
+	// 		[ 4109, '#CSGO_crate_sticker_pack_eslcologne2015_legends' ],
+	// 		[ 4110, '#CSGO_crate_sticker_pack_eslcologne2015_challengers' ],
+	// 		[ 4111, 4112, '#CSGO_crate_signature_pack_eslcologne2015_group_1' ],
+	// 		[ 4113, 4114, '#CSGO_crate_signature_pack_eslcologne2015_group_3' ]
+	// 	]
+	// },
+	// 8: {
+	// 	g_ActiveTournamentStoreLayout:
+	// 	[
+	// 		[ 4156, '#CSGO_crate_sticker_pack_cluj2015_legends' ],
+	// 		[ 4157, '#CSGO_crate_sticker_pack_cluj2015_challengers' ],
+	// 		[ 4158, 4159, '#CSGO_crate_signature_pack_cluj2015_group_1' ]
+	// 	]
+	// },
+	// 10: {
+	// 	g_ActiveTournamentStoreLayout:
+	// 	[
+	// 		[ 4254, '#CSGO_crate_sticker_pack_cologne2016_legends' ],
+	// 		[ 4255, '#CSGO_crate_sticker_pack_cologne2016_challengers' ],
+	// 		[ 4256, 4257, '#CSGO_crate_signature_pack_cologne2016_group_1' ]
+	// 	]
+	// },
+	// 11: {
+	// 	g_ActiveTournamentStoreLayout:
+	// 	[
+	// 		[ 4323, '#CSGO_crate_sticker_pack_atlanta2017_legends' ],
+	// 		[ 4324, '#CSGO_crate_sticker_pack_atlanta2017_challengers' ],
+	// 		[ 4325, 4326, '#CSGO_crate_signature_pack_atlanta2017_group_1' ]
+	// 	]
+	// },
+	// 12: {
+	// 	g_ActiveTournamentStoreLayout:
+	// 	[
+	// 		[ 4391, '#CSGO_crate_sticker_pack_krakow2017_legends' ],
+	// 		[ 4392, '#CSGO_crate_sticker_pack_krakow2017_challengers' ],
+	// 		[ 4393, 4394, '#CSGO_crate_signature_pack_krakow2017_group_1' ],
+	// 		[ 4395, '#CSGO_crate_krakow2017_bundle_of_all' ]
+	// 	]
+	// },
+	// 13: {
+	// 	g_ActiveTournamentStoreLayout:
+	// 	[
+	// 		[ 4456, 4478, '#CSGO_crate_sticker_pack_boston2018_legends' ],
+	// 		[ 4457, '#CSGO_crate_sticker_pack_boston2018_challengers' ],
+	// 		[ 4458, 4474, '#CSGO_crate_sticker_pack_boston2018_contenders' ],
+	// 		[ 4459, 4479, '#CSGO_crate_signature_pack_boston2018_group_legends' ],
+	// 		[ 4462, '#CSGO_crate_boston2018_bundle_of_all' ]
+	// 	]
+	// },
 	15: {
 		g_ActiveTournamentInfo:
 		{
@@ -279,7 +336,6 @@ var g_Tournaments = {
 			],
 			[
 			4903,
-			4895,
 			'#CSGO_crate_store_pack_paris2023_signatures_groupname'
 			],
 		]

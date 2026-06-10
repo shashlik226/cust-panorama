@@ -35,31 +35,33 @@ var InspectModelImage = ( function (){
 
 	var _SetModelScene = function ( elParent, model, itemId = 0 )
 	{
-		                                              
-
 		var elPanel = elParent.FindChildInLayoutFile( 'InspectItemModel' );
 		elPanel.SetScene( "resource/ui/econ/ItemModelPanelCharWeaponInspect.res",
 			model,
 			false
 		);
 
-		if ( ItemInfo.IsCharacter( itemId) )
+		if ( GameInterfaceAPI.GetSettingString( "cl_inventory_debug_tooltip") == "1" )
+		{
+			elPanel.Children()[0].style.visibility = 'visible';
+			elPanel.SetScene( "resource/ui/econ/ItemModelPanelCharWeaponInspect.res",
+				model,
+				false
+			);
+		}
+
+		if ( ItemInfo.IsCharacter( itemId ) )
 		{
 			var settings = ItemInfo.GetOrUpdateVanityCharacterSettings( itemId );
 			settings.panel = elPanel;
+			settings.charItemId = itemId;
 
 			CharacterAnims.PlayAnimsOnPanel( settings );
 
 			elPanel.SetCameraPreset( 7, false );
-	
 		}
 
 		elPanel.RemoveClass( 'hidden' );
-
-		if ( GameInterfaceAPI.GetSettingString( "cl_inventory_debug_tooltip") == "1" )
-		{
-			elPanel.Children()[0].style.visibility = 'visible';
-		}
 	};
 
 	var _SetImage = function( elParent, itemId )

@@ -1,0 +1,24 @@
+<root>
+	<styles>
+		<include src="file://{resources}/styles/csgostyles.css" />
+		<include src="file://{resources}/styles/mainmenu.css" />
+    	<include src="file://{resources}/styles/popups/popups_shared.css" />
+  	</styles>
+  	<script>
+		function executeJs()
+		{
+			var asd = $.GetContextPanel().FindChildInLayoutFile('TextEntry').text;
+			$.DispatchEvent( 'UIPopupButtonClicked', $.GetContextPanel() );
+			UiToolkitAPI.ShowCustomLayoutPopup( '', 'file://{resources}/layout/popups/'+asd+'.xml' );
+		}
+  	</script>
+
+  	<Panel class="PopupPanel Hidden" popupbackground="dim">
+  		<Label class="PopupTitle" text="Open popup" />
+		<TextEntry id="TextEntry" style="margin: 8px; width: 100%;"/>
+		<Panel class="PopupButtonRow">
+			<TextButton class="PopupButton" text="OPEN" onactivate="executeJs()" />
+			<TextButton class="PopupButton" text="#UI_Cancel" onactivate="$.DispatchEvent( 'UIPopupButtonClicked', '' );" />
+		</Panel>
+  	</Panel>
+</root>

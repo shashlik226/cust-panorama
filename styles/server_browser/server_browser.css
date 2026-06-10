@@ -1,0 +1,226 @@
+.server_row
+{
+	width: 100%;
+	height: 75px;
+	margin: 0 16px 16px 16px;
+	box-shadow: none;
+}
+
+.server_content {
+	flow-children: right;
+}
+
+.server_info
+{
+	width: fill-parent-flow(1.0);
+	flow-children: right;
+	vertical-align: center;
+	horizontal-align: left;
+	z-index: 3;
+	padding: 12px;
+}
+
+.server_details
+{
+	flow-children: down;
+	vertical-align: center;
+	z-index: 3;
+    margin-left: 12px;
+}
+
+.server_info .title
+{
+	font-weight: Bold;
+	color:white;
+}
+
+.server_info .details
+{
+	font-size: 12px;
+	color: white;
+	text-transform: uppercase;
+	font-weight: Bold;
+}
+
+.server_info Image {
+    width: 50px;
+    height: 50px;
+}
+
+.server__background
+{
+	width: 100%;
+	height: 100%;
+
+	background-repeat: no-repeat;
+	pre-transform-scale2d: 1, 1;
+
+	transition-property: pre-transform-scale2d;
+	transition-duration: .25s;
+	transition-timing-function: ease-in-out;
+}
+
+.server_row:hover .server__background
+{
+	pre-transform-scale2d: 1.02, 1.02;
+	sound: "UIPanorama.mainmenu_rollover";
+
+	transition-property: pre-transform-scale2d;
+	transition-duration: .25s;
+	transition-timing-function: ease-in-out;
+}
+
+.server__gradient
+{
+	width: 100%;
+	height: 100%;
+	background-color: gradient( linear, 0% 0%, 0% 100%, from( #0000003a ), to( #000000ee ) );
+}
+
+.server_buttons
+{
+	margin-right: 24px;
+	flow-children: right;
+	horizontal-align: right;
+	vertical-align: center;
+}
+
+.server_buttons Button
+{
+	width: 32px;
+	height: 32px;
+	margin-left: 32px;
+
+	wash-color: white;
+
+	tooltip-position: left;
+	tooltip-body-position: 75% 50%;
+
+	transition-property:  wash-color;
+	transition-duration: .2s;
+	transition-timing-function: ease-in-out;
+}
+
+.server_buttons Button:hover
+{
+	wash-color: rgb(24, 24, 24);
+	sound: "UIPanorama.mainmenu_rollover";
+	
+	transition-property:  wash-color;
+	transition-duration: .2s;
+	transition-timing-function: ease-in-out;
+}
+
+#jsQuickSelectionSetsContainer .RadioBox
+{
+	visibility: collapse;
+}
+
+.server_status
+{
+	margin-left: 12px;
+	flow-children: down;
+	horizontal-align: left;
+	vertical-align: center;
+}
+.server_status Image
+{
+	width: 20px;
+	height: 20px;
+
+	wash-color: white;
+
+	tooltip-position: right;
+	tooltip-body-position: 75% 50%;
+}
+
+.server_status #Secure,
+.server_status #Password
+{
+	margin-bottom: 8px;
+}
+
+.spacer-bottom
+{
+	width: 15px;
+	height: 60%;
+	margin-left: 8px;
+	margin-right: 8px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	vertical-align: center;
+}
+
+.servers-quick-select-btn
+{
+	width: fit-children;
+	min-height: 48px;
+	margin: 12px 0 12px 0;
+
+	flow-children: right;
+	vertical-align: center;
+	                       
+	background-color: rgba(0, 0, 0, 0.151);
+	border-radius: 3px;
+
+	transition-property: background-color;
+	transition-duration: .20s;
+	transition-timing-function: ease-in-out;
+}
+
+.servers-quick-select-btn:hover:not(.servers-quick-select-btn:disabled)
+{
+	background-color: rgba(0, 0, 0, 0.418);
+	
+	transition-property: background-color;
+	transition-duration: .20s;
+	transition-timing-function: ease-in-out;
+}
+
+.servers-quick-select-btn:disabled 
+{
+	wash-color: disabledColor;
+}
+
+.servers-quick-select-btn Label,
+.servers-quick-select-btn:selected Label
+{
+	margin: 0;
+	font-size: 18px;
+	max-height: 32px;
+	font-family: stratum2Font;
+	font-weight: medium;
+	color:white;
+	text-overflow: shrink;
+	padding-right: 14px;
+}
+
+.servers-quick-select-btn Image
+{
+	vertical-align: center;
+	margin: 0px 8px;
+}
+
+.servers-quick-select-btn .TickBox
+{
+	visibility: collapse;
+}
+
+.servers-quick-select-btn:selected .servers-quick-select-toggle__slider-pill
+{
+	background-color: gradient( radial, 50% 60%, 0% 0%, 90% 70%, from( #22a527 ), color-stop( .7, #22a527), to( rgb(10, 88, 10) ) );
+
+	border: 1.5px solid #147717;
+	transition-property: background-color, box-shadow;
+	transition-duration: .25s;
+	transition-timing-function: ease-in-out;
+}
+
+
+.servers-quick-select-btn:selected .servers-quick-select-toggle__slider
+{
+	transform: translateX( 50% );
+
+	transition-property: transform, background-color;
+	transition-duration: .25s;
+	transition-timing-function: ease-in-out;
+}

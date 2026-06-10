@@ -711,6 +711,12 @@ var ItemInfo = ( function() {
 			!_IsDefaultCharacter( id );
 	}
 
+	function _IsValidItem ( id )
+	{
+		var name = InventoryAPI.GetItemName( InventoryAPI.GetFauxItemIDFromDefAndPaintIndex( id, 0 ) );
+		return !( name == '' || name == undefined || !name );
+	}
+
 	return {
 		GetRarityColor					: _GetRarityColor,
 		GetName							: _GetName,
@@ -791,5 +797,6 @@ var ItemInfo = ( function() {
 		GetLoadoutWeapons				: _GetLoadoutWeapons,
 		IsSticker						: _IsSticker,
 		IsPatch							: _IsPatch,				
+		IsValidItem						: _IsValidItem
 	};
 })();

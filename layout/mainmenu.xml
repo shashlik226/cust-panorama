@@ -33,61 +33,14 @@
 		<snippet name="MainMenuVanitySnippet">
 			<Panel>
 				<Panel id="JsMainmenu_Vanity-Container" class="mainmenu-vanity MainMenuModeOnly">
-					<ItemPreviewPanel id="MainMenuVanityPlayer0"
-                                      class="full-width full-height vanity-hidden"
+					<ItemPreviewPanel id="MainMenuVanityPlayers"
+                                      class="full-width full-height"
                                       manifest="resource/ui/econ/ItemModelPanelCharMainMenu.res"
                                       item="models/player/custom_player/legacy/tm_phoenix.mdl"
                                       mouse_rotate="false"
                                       enable_floorshadow="true"
                                       hittest="false">
 					</ItemPreviewPanel>
-
-					<ItemPreviewPanel id="MainMenuVanityPlayer1"
-									class="full-width full-height mainmenu-vanity-2 vanity-hidden"
-									style="margin-left: 600px;"
-									manifest="resource/ui/econ/ItemModelPanelCharMainMenu.res"
-									item="models/player/custom_player/legacy/tm_balkan_variantf.mdl"
-									mouse_rotate="false"
-									enable_floorshadow="true"
-									hittest="false">
-					</ItemPreviewPanel>
-
-					<ItemPreviewPanel id="MainMenuVanityPlayer2"
-									class="full-width full-height mainmenu-vanity-3 vanity-hidden"
-									style="margin-left: 10px;"
-									manifest="resource/ui/econ/ItemModelPanelCharMainMenu.res"
-									item="models/player/custom_player/legacy/tm_professional_varf1.mdl"
-									mouse_rotate="false"
-									enable_floorshadow="true"
-									hittest="false">
-					</ItemPreviewPanel>
-
-					<ItemPreviewPanel id="MainMenuVanityPlayer3"
-									class="full-width full-height mainmenu-vanity-4 vanity-hidden"
-									manifest="resource/ui/econ/ItemModelPanelCharMainMenu.res"
-									style="margin-left: 800px;"
-									item="models/player/custom_player/legacy/tm_balkan_variantj.mdl"
-									mouse_rotate="false"
-									enable_floorshadow="true"
-									hittest="false">
-					</ItemPreviewPanel>
-
-					<ItemPreviewPanel id="MainMenuVanityPlayer4"
-									class="full-width full-height mainmenu-vanity-5 vanity-hidden"
-									style="margin-left: -100px; "
-									manifest="resource/ui/econ/ItemModelPanelCharMainMenu.res"
-									item="models/player/custom_player/legacy/tm_phoenix.mdl"
-									mouse_rotate="false"
-									enable_floorshadow="true"
-									hittest="false">
-					</ItemPreviewPanel>
-
-					<Panel id="VanityControls" hittest="true">
-						<Button id="VanityPanelGoToCharacterLoadout"
-							onactivate="$.DispatchEvent( 'MainMenu_OnGoToCharacterLoadoutPressed' )"> 
-							<Image textureheight="32" texturewidth="-1" src="file://{images}/icons/ui/tune.svg" />
-						</Button>
-					</Panel>
 				</Panel>
 
 			</Panel>
@@ -110,9 +63,36 @@
 						<Panel class="mainmenu-vanity__vignette" hittest="false"/>
 						<CSGOBackbufferImagePanel class="full-width full-height PauseMenuModeOnly" />
 						<Panel id="MainMenuMovieParent" />
-						<CSGOBlurTarget id="MainMenuVanityParent" />
+						<Panel id="MainMenuVanityParent" />
 
 					</CSGOBlurTarget>
+					<Panel id="MainMenuVanityInfo" class="MainMenuModeOnly" hittest="false" />
+					
+					<Panel id="JsMainMenuRightColumn" class="mainmenu-right-column">
+						<Panel id="vanitydebug_entrys" hittest="true" style="visibility: collapse;">
+							<Label text="Player"/>
+							<DropDown id="vanitydebug_player" class="PopupButton White" menuclass="DropDownMenu" style="margin-bottom: 5px;">
+								<Label id="0" text="Player 0" />
+								<Label id="1" text="Player 1" />
+								<Label id="2" text="Player 2" />
+								<Label id="3" text="Player 3" />
+								<Label id="4" text="Player 4" />
+							</DropDown>
+							<Label text="Offset"/>
+							<TextEntry id="vanitydebug_offset" style="margin-bottom: 5px;" placeholder="0 0 0" />
+							<Label text="Rotation"/>
+							<TextEntry id="vanitydebug_rotation" style="margin-bottom: 10px;" placeholder="0 0 0" />
+							<Button class="FlatButton" style="width: 100%; margin: 5px;">
+								<Label text="Update Vanity" onactivate="MainMenu.DebugUpdateVanityModel()" hittest="false" />
+							</Button>
+						</Panel>
+						<Panel id="VanityControls" hittest="true">
+							<Button id="VanityPanelGoToCharacterLoadout"
+								onactivate="$.DispatchEvent( 'MainMenu_OnGoToCharacterLoadoutPressed' )"> 
+								<Image textureheight="32" texturewidth="-1" src="file://{images}/icons/ui/tune.svg" />
+							</Button>
+						</Panel>
+					</Panel>
 
 					<Panel id="JsNewsContainer" class="mainmenu_news_container hidden" />
 

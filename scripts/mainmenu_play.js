@@ -54,6 +54,8 @@ var PlayMenu = ( function()
 		retakes: 'retakes'
 	};
 
+	var m_selectedServerBrowser = false;
+
 	function inDirectChallenge ()
 	{
 		return _GetDirectChallengeKey() != '';
@@ -103,7 +105,7 @@ var PlayMenu = ( function()
 				return;
 			}
 
-			if( m_gameModeSetting == 'survival' && ( !PartyListAPI.IsPartySessionActive() || PartyListAPI.GetCount() <= 1 ) ) {
+			if( m_gameModeSetting == 'survival' && ( !PartyListAPI.IsPartySessionActive() || PartyListAPI.GetCount() <= 1 ) && m_serverSetting == 'listen' ) {
 				btnStartSearch.RemoveClass( 'pressed' );
 				UiToolkitAPI.ShowGenericPopupOk(
 					'Warning',
@@ -701,6 +703,7 @@ var PlayMenu = ( function()
 
 	function _UpdateStartSearchBtn( isSearchingForTournament )
 	{
+		if(m_selectedServerBrowser) return;
 		var btnStartSearch = $.GetContextPanel().FindChildInLayoutFile( 'StartMatchBtn' );
 		btnStartSearch.enabled = isSearchingForTournament ? ( _GetTournamentOpponent() != '' && _GetTournamentStage() != '' ) : true;
 	}
@@ -2121,6 +2124,7 @@ var PlayMenu = ( function()
 		let bShow = !isSearching && isHost ? true : false;
 		var btnStartSearch = $.GetContextPanel().FindChildInLayoutFile( 'StartMatchBtn' );
 
+		if(m_selectedServerBrowser) bShow = false;
 		                                                                    
 		                                                                                        
 		                                                 
@@ -3145,12 +3149,9 @@ var PlayMenu = ( function()
 
                                                                                       
 		_TurnOffDirectChallenge();
+		_ChangePlayMenu(playType);
 
-		if ( playType === 'listen' || playType === 'training' || playType === 'workshop' )
-		{
-			                                       
-		}
-		else
+		if ( !(playType === 'listen' || playType === 'training' || playType === 'workshop') )
 		{
 			var restrictions = LicenseUtil.GetCurrentLicenseRestrictions();
 			if ( restrictions !== false )
@@ -3193,21 +3194,7 @@ var PlayMenu = ( function()
 		}
 		else if ( playType === 'community' )
 		{
-			if ( '0' === GameInterfaceAPI.GetSettingString( 'player_nevershow_communityservermessage' ) )
-			{
-				UiToolkitAPI.ShowCustomLayoutPopup( 'server_browser_popup', 'file://{resources}/layout/popups/popup_serverbrowser.xml' );
-			}
-			else
-			{
-				if ( m_bPerfectWorld )
-				{
-					SteamOverlayAPI.OpenURL( 'https://csgo.wanmei.com/communityserver' );
-				}
-				else
-				{
-					GameInterfaceAPI.ConsoleCommand( "gamemenucommand openserverbrowser" );
-				}
-			}
+			m_serverSetting = playType;
 		}
 
 		_UpdateGameModeFlagsBtn();
@@ -3392,6 +3379,29 @@ var PlayMenu = ( function()
 	function _InventoryUpdated()
 	{
 		_UpdatePrimeBtn( _IsSearching(), LobbyAPI.BIsHost());
+	}
+
+	function _ChangePlayMenu(id) {
+
+		var elRoot = $.GetContextPanel();
+		if(id === 'community') {
+			m_selectedServerBrowser = true;
+			$('#MapSelectionListContainer').AddClass('hidden');
+			$('#StartMatchBtn').AddClass('hidden');
+			$('#ContentNavBar').AddClass('hidden');
+			$('#SettingsNavBar').AddClass('hidden');
+			$('#ServersRefreshBtn').RemoveClass('hidden');
+			$('#ServerBrowserContainer').RemoveClass('hidden');
+			$('#ServersRefreshBtn').enabled = true;
+		} else if ( elRoot.FindChildInLayoutFile('MapSelectionListContainer').BHasClass('hidden') ) {
+			m_selectedServerBrowser = false;
+			$('#MapSelectionListContainer').RemoveClass('hidden');
+			$('#StartMatchBtn').RemoveClass('hidden');
+			$('#ContentNavBar').RemoveClass('hidden');
+			$('#SettingsNavBar').RemoveClass('hidden');
+			$('#ServersRefreshBtn').AddClass('hidden');
+			$('#ServerBrowserContainer').AddClass('hidden');
+		}
 	}
 
 

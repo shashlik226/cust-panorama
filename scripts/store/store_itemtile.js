@@ -58,7 +58,7 @@ var ItemTileStore;
             strItemName = $.Localize(InventoryAPI.GetRawDefinitionKey(oItemData.id, 'item_name') + '_tinyname');
         }
         else {
-            strItemName = InventoryAPI.GetItemName(oItemData.linkedid ? oItemData.linkedid : oItemData.id);
+            strItemName = InventoryAPI.GetItemName(oItemData.id);
         }
         elPanel.SetDialogVariable('item-name', strItemName);
     }
@@ -85,14 +85,14 @@ var ItemTileStore;
         elPanel.FindChildInLayoutFile('id-itemtile-store-price').SetHasClass('has-reduction', reduction !== '' && reduction !== undefined && !isMarketItem);
         elPanel.SetDialogVariable('reduction', reduction);
         let origPrice = (oItemData.hasOwnProperty('linkedid')) &&
-            ItemInfo.GetStoreOriginalPrice(oItemData.linkedid, 1) !== ItemInfo.GetStoreOriginalPrice(oItemData.id, 1) ?
-            ItemInfo.GetStoreOriginalPrice(oItemData.linkedid, 1) + ' - ' + ItemInfo.GetStoreOriginalPrice(oItemData.id, 1) :
+            ItemInfo.GetStoreOriginalPrice(oItemData.id, 1) !== ItemInfo.GetStoreOriginalPrice(oItemData.linkedid, 1) ?
+            ItemInfo.GetStoreOriginalPrice(oItemData.id, 1) + ' - ' + ItemInfo.GetStoreOriginalPrice(oItemData.linkedid, 1) :
             ItemInfo.GetStoreOriginalPrice(oItemData.id, 1);
         let salePrice = (isMarketItem) ?
             $.Localize('#SFUI_Store_Market_Link') :
             (oItemData.hasOwnProperty('linkedid')) &&
-                ItemInfo.GetStoreOriginalPrice(oItemData.linkedid, 1) !== ItemInfo.GetStoreOriginalPrice(oItemData.id, 1) ?
-                ItemInfo.GetStoreSalePrice(oItemData.linkedid, 1) + ' - ' + ItemInfo.GetStoreSalePrice(oItemData.id, 1) :
+                ItemInfo.GetStoreOriginalPrice(oItemData.id, 1) !== ItemInfo.GetStoreOriginalPrice(oItemData.linkedid, 1) ?
+                ItemInfo.GetStoreSalePrice(oItemData.id, 1) + ' - ' + ItemInfo.GetStoreSalePrice(oItemData.linkedid, 1) :
                 ItemInfo.GetStoreSalePrice(oItemData.id, 1);
         elPanel.SetDialogVariable('original-price', origPrice);
         elPanel.SetDialogVariable('sale-price', salePrice);

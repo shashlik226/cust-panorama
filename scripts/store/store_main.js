@@ -7,6 +7,12 @@ var MainMenuStore;
     let _m_activePanelId = '';
     let _m_pagePrefix = 'id-store-page-';
 
+    let nonPageCategories = [
+        'tools',
+        'nightmode',
+        'nightmode2'
+    ]
+
     function ReadyForDisplay() {
 
         // ugh
@@ -60,6 +66,13 @@ var MainMenuStore;
             if (panelId === 'id-store-page-home') {
                 UpdateItemsInHomeSection('coupons', 'id-store-popular-items', 5);
                 UpdateItemsInHomeSection('tools', 'id-store-tools-items', 5);
+
+                if(ItemInfo.IsValidItem(7041))
+                    CreateAndUpdateItemsInHomeSection('nightmode', 'NIGHTMODE\nMusic Kits', 6, 'url("file://{images}/backgrounds/store_home_coupon_nightmode2.png")');
+
+                if(ItemInfo.IsValidItem(7029))
+                    CreateAndUpdateItemsInHomeSection('nightmode2', 'NIGHTMODE II\nMusic Kits', 6, 'url("file://{images}/backgrounds/store_home_coupon_nightmode2.png")');
+
             } else if (panelId === 'id-store-page-tournament') {
                 MakeTournamentsPage();
             } else {
@@ -102,8 +115,10 @@ var MainMenuStore;
                     elBackground.style.backgroundImage = 'url("file://{images}/tournaments/events/bg_' + tournamentid + '_fullscreen.png")';
                 else if (tournamentid == 16)
                     elBackground.style.backgroundImage = "url( 'file://{images}/tournaments/backgrounds/background_" + tournamentid + ".png' );";
-                else
+                else if (tournamentid == 15)
                     elBackground.style.backgroundImage = "url( 'file://{resources}/videos/tournament_bg.webm' );";
+                else
+                    elBackground.style.backgroundImage = "url( 'file://{images}/backgrounds/background.png' )";
 
                 elBackground.style.backgroundRepeat = 'no-repeat';
 		        elBackground.style.backgroundSize = 'cover' ;
@@ -135,12 +150,12 @@ var MainMenuStore;
         }
     }
 
-    function UpdateItemsInHomeSection(category, parentId, numItemsToShow) {
+    function UpdateItemsInHomeSection(category, parentId, numItemsToShow, background = 'url("file://{images}/backgrounds/background.png")') {
         let elPanel = _m_cp.FindChildInLayoutFile(parentId);
         let elParent = _m_cp.FindChildInLayoutFile('id-store-home-section-' + category);
 
         if (elParent && elPanel) {
-            elParent.style.backgroundImage = 'url("file://{images}/backgrounds/background.png")';
+            elParent.style.backgroundImage = background;
             elParent.style.backgroundPosition = '50% 50%';
             elParent.style.backgroundSize = 'cover';
 
@@ -177,7 +192,7 @@ var MainMenuStore;
 
             if (elParent) {
                 for (let [key, value] of Object.entries(oItemsByCategory)) {
-                    if(key == 'tools')
+                    if(nonPageCategories.includes(key))
                         continue;
 
                     let panelIdString = 'id-store-nav-' + key;
@@ -261,6 +276,49 @@ var MainMenuStore;
     function UpdateItem(elPanel, typeKey, idx) {
         let oItemData = StoreItems.GetStoreItemData(typeKey, idx);
         ItemTileStore.Init(elPanel, oItemData);
+    }
+
+    function CreateAndUpdateItemsInHomeSection(category, name, numItemsToShow, background = 'url("file://{images}/backgrounds/background.png")') {
+        let elHomeSection = _m_cp.FindChildInLayoutFile('id-store-page-home-sections');
+        let elParent = elHomeSection.FindChildInLayoutFile('id-store-items-'+category);
+
+        if(!elParent) {
+            elParent = $.CreatePanel('Panel', elHomeSection, 'id-store-items-'+category);
+            elParent.BLoadLayoutSnippet('HomeSection');
+            elParent.SetDialogVariable('name', name);
+        }
+
+        let elPanel = elParent.FindChildInLayoutFile('store-items');
+
+        if (elParent && elPanel) {
+            elParent.style.backgroundImage = background;
+            elParent.style.backgroundPosition = '50% 50%';
+            elParent.style.backgroundSize = 'cover';
+
+            try {
+                let oItemsByCategory = StoreItems.GetStoreItems();
+                let aItemsList = oItemsByCategory[category];
+
+                if (!aItemsList || aItemsList.length < 1) {
+                    elParent.visible = false;
+                    return;
+                }
+
+                elParent.visible = true;
+
+                for (let i = 0; i < numItemsToShow; i++) {
+                    let elTile = elPanel.FindChildInLayoutFile('home-' + category + '-' + i);
+
+                    if (!elTile) {
+                        elTile = $.CreatePanel("Button", elPanel, 'home-' + category + '-' + i);
+                        elTile.BLoadLayout('file://{resources}/layout/store/store_itemtile.xml', false, false);
+                    }
+
+                    UpdateItem(elTile, category, i);
+                }
+            } catch (e) {
+            }
+        }
     }
 
     {

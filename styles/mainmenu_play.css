@@ -45,17 +45,6 @@
 	horizontal-align: center;
 }
 
-.map-selection-list--official-competitive,
-.map-selection-list--official-scrimcomp2v2,
-.map-selection-list--listen-competitive,
-.map-selection-list--listen-scrimcomp2v2,
-.map-selection-list--listen-casual,
-.map-selection-list--listen-deathmatch,
-.map-selection-list--workshop
-{
-	padding: 0px 96px;
-}
-
 #gameModeButtonContainer_competitive_official_directchallenge.map-selection-list--official-competitive
 {
 	padding: 0px 32px;
@@ -605,7 +594,6 @@
 	background-color: contentPanelBackground;
 }
 
-                                                                                                      
 
 
 .map-selection-list__quick-selection-sets {
@@ -630,9 +618,20 @@
 	margin: 0px 12px;
 }
 
-.competitive.official:not(.directchallenge) .map-selection-list__quick-selection-sets 
+.competitive.official:not(.directchallenge) .map-selection-list__quick-selection-sets
 {
 	width: 200px;
+	opacity: 1;
+	background-color: contentPanelBackground;
+
+	transition-property: width, opacity;
+	transition-duration: 0.2s;
+	transition-timing-function: ease-in-out;
+}
+
+.servers-quick-selection-sets
+{
+	width: 300px;
 	opacity: 1;
 	background-color: contentPanelBackground;
 
@@ -650,14 +649,15 @@
 
 .map-selection__quick-selection-set-title
 {
+	width: 100%;
 	margin-top: 32px;
 	margin-bottom : 8px;
 	font-size: 18px;
 	font-family: stratum2Font;
 	font-weight: lighter;
 	horizontal-align: left;
+	text-align: center;
 	vertical-align: center;
-	padding-left: 24px;
 	color: rgba(212, 212, 212, 0.671);
 }
 
@@ -702,7 +702,7 @@
 
 .map-selection__quick-selection-set-icon{
 	height: fit-children;
-	width: 166px;
+	width: 100%;
 	margin: 0px 4px;
 	padding: 8px 10px 10px 10px;
 	border-radius: 3px;
@@ -890,8 +890,8 @@
 
 .map-selection-btn
 {
-	width: 224px;
-  height: width-percentage(117%);
+	width: 250px;
+    height: 300px;
 	margin: 24px 16px;
 	border: 0px solid gray;
 	box-shadow: shadowOffset;
@@ -1167,6 +1167,12 @@
 	font-size: 18px;
 }
 
+.map-selection-info__map-name.fontSize-s
+{
+	font-size: 18px;
+}
+
+
 .map-selection-info__new
 {
 	padding: 2px 8px 0px 10px;
@@ -1370,7 +1376,6 @@ RadioButton .map-selection-info__new
 	background-color: contentPanelBackground;
 	width: 100%;
 	height: 96px;
-	padding-left: 64px;
 	vertical-align: bottom;
 	border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -1474,7 +1479,7 @@ RadioButton .map-selection-info__new
 
 .play-menu-controls-actions-bar__right
 {
-	flow-children :right;
+	flow-children: right;
 	height: 100%;
 	horizontal-align: right;
 }
@@ -1482,6 +1487,15 @@ RadioButton .map-selection-info__new
 .play-menu-controls-action-bar__right__go-cancel
 {
 	padding-right: 24px;
+	height: 100%;
+	vertical-align: center;
+	padding-left: 16px;
+
+}
+
+.server-bottom_navbar
+{
+	padding-right: 16px;
 	height: 100%;
 	vertical-align: center;
 	padding-left: 16px;
@@ -1586,7 +1600,7 @@ RadioButton .map-selection-info__new
 .play-menu__playbtn--startsearch:disabled
 {
 	box-shadow: none;
-	wash-color: disabledColor;
+	wash-color: negativeColor;
 }
 
 .group-text-with-steam-button
@@ -1594,7 +1608,6 @@ RadioButton .map-selection-info__new
 	horizontal-align: center;
 	flow-children:right;
 }
-
 
 .play-menu__playbtn--stopsearch
 {
@@ -1720,7 +1733,6 @@ RadioButton .map-selection-info__new
 	}
 }
 
-
 .play-menu-option-btn
 {
 	flow-children:right;
@@ -1730,7 +1742,7 @@ RadioButton .map-selection-info__new
 	width: fit-children;
 	                       
 	background-color: rgba(0, 0, 0, 0.151);
-	border-radius: 20px;
+	border-radius: 3px;
 
 	transition-property: background-color;
 	transition-duration: .20s;
@@ -1988,4 +2000,12 @@ ToggleButton.play-menu-option-btn:selected Label
 	font-family: stratum2Font;
 	font-weight: lighter;
 	font-size: 20px;
+}
+
+#JsPlayContent .hidden  {
+	margin: 0;
+	padding: 0;
+	width: 0;
+	height: 0;
+	opacity: 0;
 }
