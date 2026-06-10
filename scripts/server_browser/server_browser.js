@@ -92,7 +92,6 @@ var ServerBrowser = (function () {
 
 			elEntry.FindChildTraverse( 'Secure' ).visible = server.secure;
 			elEntry.FindChildTraverse( 'Password' ).visible = false;
-			elEntry.FindChildTraverse( 'AppIdConflict' ).visible = false;
 
 			if(!server.Secure && !server.Password && !server.AppID)
 				elEntry.FindChildTraverse( 'server_status' ).visible = false;
