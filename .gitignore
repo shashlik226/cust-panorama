@@ -1,4 +1,5 @@
 makepbin.exe
+config.res
 *.pbin
-/videos/
-/fonts/
+videos/
+fonts/

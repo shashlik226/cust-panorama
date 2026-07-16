@@ -39,7 +39,7 @@ var PopupPrimeStatus = ( function ()
 		m_btnPurchase.SetDialogVariable( "price", sPrice ? sPrice : '$0' );
 		
 		m_btnPurchase.SetPanelEvent('onactivate', function () {
-			SteamOverlayAPI.OpenURL( _GetStoreUrl() + '/sub/54029');
+			StoreAPI.StoreItemPurchase( InventoryAPI.GetFauxItemIDFromDefAndPaintIndex( 1353, 0 ) );
 			$.DispatchEvent('UIPopupButtonClicked', '');
 		});
 	}

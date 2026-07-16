@@ -88,6 +88,20 @@
 						</Panel>
 					<Panel class="horizontal-separator"/>
 
+					<Panel id="RenderAspectRatioSetting" class="SettingsMenuDropdownContainer">
+						<Label text="Render Aspect Ratio" class="half-width"/>
+						<CSGOSettingsEnumDropDown class="PopupButton White" convar="r_aspectratio">
+							<Label text="Disabled" value="0" id="renderaspectratio0" />
+							<Label text="21:9" value="2.333" id="renderaspectratio1" />
+							<Label text="16:9" value="1.777" id="renderaspectratio2" />
+							<Label text="16:10" value="1.6" id="renderaspectratio3" />
+							<Label text="5:4" value="1.25" id="renderaspectratio4" />
+							<Label text="4:3" value="1.333" id="renderaspectratio5" />
+							<Label text="1:1" value="1.0" id="renderaspectratio6" />
+						</CSGOSettingsEnumDropDown>
+					</Panel>
+					<Panel class="horizontal-separator"/>
+
 					                   
 					<Panel class="SettingsMenuDropdownContainer">
 						<Label text="#SFUI_Settings_Resolution" class="half-width"/>

@@ -30,36 +30,6 @@ var ItemContextEntires = ( function (){
                                                                   
 	                                                                                                    
 	var _Entries = [
-	  
-		 
-			                                                                            
-			                                                                     
-			                                                                                    
-			                                   
-				                                                                 
-				            	
-			  
-			                              
-				                                    
-			 
-		  
-	  	
-			          
-			 
-				                         
-				                            
-				                     
-					                         
-				  
-				                                   
-					                                                                                       
-				  
-				                              
-					                                          
-					                              
-				 
-			  
-			          
 			{
 			name: 'preview',
 			populateFilter: ['lootlist', 'loadout', 'tradeup_items', 'tradeup_ingredients'],

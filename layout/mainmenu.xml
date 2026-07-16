@@ -79,11 +79,19 @@
 								<Label id="4" text="Player 4" />
 							</DropDown>
 							<Label text="Offset"/>
-							<TextEntry id="vanitydebug_offset" style="margin-bottom: 5px;" placeholder="0 0 0" />
+							<TextEntry id="vanitydebug_offset" style="margin-bottom: 5px;" placeholder="0 0 0" text="-80 0 0" />
 							<Label text="Rotation"/>
-							<TextEntry id="vanitydebug_rotation" style="margin-bottom: 10px;" placeholder="0 0 0" />
-							<Button class="FlatButton" style="width: 100%; margin: 5px;">
-								<Label text="Update Vanity" onactivate="MainMenu.DebugUpdateVanityModel()" hittest="false" />
+							<TextEntry id="vanitydebug_rotation" style="margin-bottom: 10px;" placeholder="0 0 0" text="0 0 0" />
+							<Button class="FlatButton" style="width: 100%; margin: 5px;" onactivate="MainMenu.DebugUpdateVanityModel()">
+								<Label text="Update Vanity" hittest="false" />
+							</Button>
+							<Label text="Vanity Data" style="margin-top: 10px;"/>
+							<TextEntry id="vanitydebug_vanityData" style="margin-bottom: 10px;" placeholder="team,agent,gloves,slot,weapon" text="ct,17293822569102709677,17293822569102709669,rifle4,17293822569102704649" />
+							<Button class="FlatButton" style="width: 100%; margin: 5px;" onactivate="MainMenu.DebugCreateVanityModel()">
+								<Label text="Create Vanity Player" hittest="false" />
+							</Button>
+							<Button class="FlatButton" style="width: 100%; margin: 5px;" onactivate="MainMenu.DebugDeleteVanityModel()">
+								<Label text="Delete Vanity Player" hittest="false" />
 							</Button>
 						</Panel>
 						<Panel id="VanityControls" hittest="true">
@@ -243,6 +251,15 @@
 								<Label class="navbar-btn__notification-text" text="{d:num_settings}"/> 
 							</Panel>
 						</RadioButton>
+
+						<Button id="MainMenuNavBarDEV"
+									class="mainmenu-navbar__btn-small"
+									group="NavBar"
+									onactivate="MainMenu.ShowDevContextMenu();"
+									onmouseover="UiToolkitAPI.ShowTextTooltip( 'MainMenuNavBarDEV', 'DEV' );"
+									onmouseout="UiToolkitAPI.HideTextTooltip();">
+							<Image textureheight="32" texturewidth="-1" src="file://{images}/icons/ui/bug.svg" />
+						</Button>
 		
 						<Panel class="vertical-align-bottom horizontal-center">
 							                                            

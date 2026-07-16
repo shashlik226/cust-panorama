@@ -9,12 +9,12 @@
   	<scripts>
 		<include src="file://{resources}/scripts/common/formattext.js" />
   	    <include src="file://{resources}/scripts/common/iteminfo.js" />
-  	    <include src="file://{resources}/scripts/popups/popup_generate_item.js" />
+  	    <include src="file://{resources}/scripts/popups/popup_generate_select_sticker.js" />
   	</scripts>
 
-  	<Panel class="PopupPanel popup-items-list Hidden" popupbackground="dim" onload="PopupGenerateItems.Init()">
-  		<Label class="PopupTitle" text="ITEM GENERATOR 3000 v2" />
-		<TextEntry id="itemsFilter" ontextentrychange="PopupGenerateItems.CreatePanels()"/>
+  	<Panel class="PopupPanel popup-items-list Hidden" popupbackground="dim" onload="PopupGenerateSelectSticker.Init()">
+  		<Label class="PopupTitle" text="STICKER SELECTOR" />
+		<TextEntry id="itemsFilter" ontextentrychange="PopupGenerateSelectSticker.CreatePanels()"/>
 		<Panel id="id-popup-items" class="PopupMessage left-right-flow-wrap vscroll">
                                   
         </Panel>

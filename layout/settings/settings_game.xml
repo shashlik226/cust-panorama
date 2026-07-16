@@ -109,7 +109,7 @@
 
 			<Panel id="SettingsNetGraph" class="SettingsBackground">
 				<Panel class="SettingsSectionTitleContianer">
-					<Label class="SettingsSectionTitleLabel" text="#ol_settings_netgraph" />
+					<Label class="SettingsSectionTitleLabel" text="Net Graph" />
 				</Panel>
 			
 				<Panel class ="top-bottom-flow full-width">
@@ -151,7 +151,7 @@
 
 			<Panel id="SettingsViewmodel" class="SettingsBackground">
 				<Panel class="SettingsSectionTitleContianer">
-					<Label class="SettingsSectionTitleLabel" text="#ol_settings_viewmodel" />
+					<Label class="SettingsSectionTitleLabel" text="Viewmodel" />
 				</Panel>
 				<Panel class ="top-bottom-flow full-width">
 

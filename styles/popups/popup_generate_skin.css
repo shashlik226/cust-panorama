@@ -10,23 +10,59 @@
     flow-children: down;
     horizontal-align: center;
     vertical-align: center;
-
+    width: 450px;
     margin: 12px;
 }
 
+.Group {
+    width: 100%;
+    height: fit-children;
+    horizontal-align: right;
+    flow-children: right;
+}
+
+.Group .Stickers {
+    horizontal-align: center;
+    flow-children: right;
+}
+
+.Stickers.hidden {
+    visibility: collapse;
+}
+
+.Group .DropDownName {
+    margin-right: 8px;
+}
+
+.Group ItemImage {
+    width: 60px;
+    height: 60px;
+    margin: 8px;
+
+    transition-property: brightness,  background-color;
+	transition-duration: .20s;
+	transition-timing-function: ease-in-out;
+}
+
+.Group ItemImage:hover {
+    brightness: 1.5;
+    background-color: rgba(255, 255, 255, 0.02);
+
+    transition-property: brightness,  background-color;
+	transition-duration: .20s;
+	transition-timing-function: ease-in-out;
+}
+
+.Options TextEntry,
+.Options CSGOSettingsSlider,
 .Options DropDown {
     width: 300px;
     margin-bottom: 4px;
+    horizontal-align: right;
 }
-
-.Options TextEntry {
-    width: 300px;
-    margin-bottom: 4px;
-}
-
 
 ItemPreviewPanel {
-    width: 500px;
+    width: 450px;
     height: 250px;
 }
 
@@ -37,4 +73,23 @@ ItemImage {
 
 .hidden {
     visibility: collapse;
+}
+
+#id-popup-items {
+    max-height: 800px;
+}
+
+.PopupPanel.popup-items-list
+{
+    max-width: 900px;
+}
+
+#itemsFilter {
+    width: 100%;
+    margin: 12px;
+}
+
+.FindPaintButton
+{
+    margin-right: 8px;
 }

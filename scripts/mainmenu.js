@@ -15,6 +15,7 @@ var MainMenu = ( function() {
 		"NotificationRed", "NotificationYellow", "NotificationGreen", "NotificationLoggingOn"
 	];
 	let m_latestVaniyData = {};
+	let m_bVanityDebugEnabled = false;
 
 	var _m_storePopupElement = null;
 	var m_TournamentPickBanPopup = null;
@@ -781,19 +782,22 @@ var MainMenu = ( function() {
 			return;
 		}
 		if ( _m_bVanityAnimationAlreadyStarted ) {
+			_VanityDebugMsg("_InitVanity has been called, but vanity arleady started");
+			_LobbyPlayerUpdated(true);
 			return;
 		}
 		
 		let vanityPanel = $('#MainMenuVanityPlayers');
+		if(!vanityPanel)
+			return;
+	
 		vanityPanel.CreateSceneContexts( 5 );
-		_VanityDebugMsg("Created scene contexts for vanity");
 
-		m_latestVaniyData = {};
 		_LobbyPlayerUpdated();
 		_m_bVanityAnimationAlreadyStarted = true;
 	};
 
-	function _LobbyPlayerUpdated()
+	function _LobbyPlayerUpdated(forceUpdate = false)
 	{
 		_VanityDebugMsg("_LobbyPlayerUpdated executed");
 		_HideVanityPanels();
@@ -817,15 +821,15 @@ var MainMenu = ( function() {
 			if(!$('#MainMenuVanityPlayers')) //nonoonon
 				return;
 
-			_VanityDebugMsg('Party is not active, using locally vanity');
+			_VanityDebugMsg('Party is not active');
 
 			oSettings.vanityData = localVanityData;
 			oSettings.xuid = MyPersonaAPI.GetXuid();
 			oSettings.playerIdx = 0;
 			oSettings.isLocalPlayer = true;
 
-			const bIsVanityUpdated = m_latestVaniyData[0] ? oSettings.vanityData != m_latestVaniyData[0] : true;
-			_VanityDebugMsg(bIsVanityUpdated);
+			const bIsVanityUpdated = forceUpdate == true ? true : ( m_latestVaniyData[0] ? oSettings.vanityData != m_latestVaniyData[0] : true );
+			_VanityDebugMsg("Vanity data of 0: "+bIsVanityUpdated + " | " + forceUpdate);
 
 			a_currentVaniyData[0] = _CreateVanitySettings(oSettings);
 			m_latestVaniyData[0] = oSettings.vanityData;
@@ -848,13 +852,12 @@ var MainMenu = ( function() {
 			oSettings.playerIdx = i;
 			oSettings.isLocalPlayer = bIsSelf;
 
-			// its bad
-			if(!oSettings.vanityData)
-				continue;
+			if(!oSettings.vanityData) // using default data (ct, awp)
+				oSettings.vanityData = "ct,17293822569102709677,17293822569102709669,rifle4,17293822569102704649";
 
 			// need be sure, maybe m_latestVaniyData[i] not initialized
-			const bIsVanityUpdated = m_latestVaniyData[i] ? oSettings.vanityData != m_latestVaniyData[i] : true;
-			_VanityDebugMsg("vanity "+i+" updated: "+bIsVanityUpdated);
+			const bIsVanityUpdated = forceUpdate == true ? true : ( m_latestVaniyData[i] ? oSettings.vanityData != m_latestVaniyData[i] : true );
+			_VanityDebugMsg("vanity "+i+" updated: "+bIsVanityUpdated + " | " + forceUpdate);
 		
 			a_currentVaniyData[i] = _CreateVanitySettings(oSettings);
 			m_latestVaniyData[i] = oSettings.vanityData;
@@ -873,7 +876,7 @@ var MainMenu = ( function() {
 
 	function _UpdateOrCreateVanityPanel( playerIdx, oSettings ) {
 		if(!oSettings) {
-			_VanityDebugMsg('Warning! Player'+playerIdx+' not found in m_currentVaniyData, aborting');
+			_VanityDebugMsg('Warning! oSettings of player'+playerIdx+' is empty, aborting');
 			return;
 		}
 		let vanityPanel = $('#MainMenuVanityPlayers');
@@ -888,8 +891,6 @@ var MainMenu = ( function() {
 
 		CharacterAnims.PlayAnimsOnPanel( oSettings, false, true, playerIdx );
 		_SetVanityLightingBasedOnBackgroundMovie( vanityPanel, playerIdx );
-
-		vanityPanel.UpdateFocusInContext();
 	}
 
 	// start credits to Deformisani SAS
@@ -971,26 +972,32 @@ var MainMenu = ( function() {
 			if(i < partySize) continue;
 
 			_VanityDebugMsg('DELETING '+i)
+		
+			VanityPlayerInfo.DeleteVanityInfoPanel($('#MainMenuVanityInfo'), i);
+		
 		    let vanityPanel = $('#MainMenuVanityPlayers');
 		    vanityPanel.SetActiveSceneContext( i );
 			vanityPanel.SetSceneModel( "models/crow.mdl" );
-	
-			VanityPlayerInfo.DeleteVanityInfoPanel($('#MainMenuVanityInfo'), i);
+			vanityPanel.ResetAnimation( false );
 
 			delete m_latestVaniyData[i];
 		}
 	}
 
 	function _VanityDebugMsg( msg ) {
-		return;
+		if(!m_bVanityDebugEnabled) return;
 		$.Msg('[VANITY DEBUG] '+msg);
 	}
 
 	var _SetVanityLightingBasedOnBackgroundMovie = function( vanityPanel, i )
 	{
+		var elBackground = $.GetContextPanel().FindChildInLayoutFile( 'MainMenuMovie' );
+		if(!elBackground)
+			return;
+
+		var backgroundMap = elBackground.GetAttributeString( 'data-type', 'anubis' );
+
 		vanityPanel.SetActiveSceneContext( i );
-		
-		var backgroundMap = $.GetContextPanel().FindChildInLayoutFile( 'MainMenuMovie' ).GetAttributeString( 'data-type', 'anubis' );
 		vanityPanel.RestoreLightingState();
 
 		if ( backgroundMap === 'cbble' )
@@ -1931,10 +1938,11 @@ var MainMenu = ( function() {
 			{ label: 'Open popup', jsCallback: function() {
 				UiToolkitAPI.ShowCustomLayoutPopup('', 'file://{resources}/layout/popups/popup_open_popup.xml');
 			} },
-			{ label: 'Show/Hide Vanity debug', jsCallback: function() {
-				$.GetContextPanel().FindChildTraverse('vanitydebug_entrys').visible = !$.GetContextPanel().FindChildTraverse('vanitydebug_entrys').visible;
+			{ label: 'Toggle Vanity Debug', jsCallback: function() {
+				m_bVanityDebugEnabled = !m_bVanityDebugEnabled;
+				$.GetContextPanel().FindChildTraverse('vanitydebug_entrys').visible = m_bVanityDebugEnabled;
 			} },
-			{ label: 'Reload Vanity', jsCallback: function() {
+			{ label: 'Rebuild Vanity', jsCallback: function() {
 				$('#MainMenuVanityInfo').RemoveAndDeleteChildren();
 				$('#MainMenuVanityPlayers').DeleteAsync(.0);
 				let vanityPanel = $.CreatePanel('ItemPreviewPanel', $('#JsMainmenu_Vanity-Container'), "MainMenuVanityPlayers", {
@@ -1945,9 +1953,9 @@ var MainMenu = ( function() {
 					enable_floorshadow: true,
 					hittest: false
 				});
-				vanityPanel.CreateSceneContexts( 5 );
+				_m_bVanityAnimationAlreadyStarted = false;
 				m_latestVaniyData = {};
-				$.Schedule( .3, _LobbyPlayerUpdated );
+				$.Schedule( .3, _InitVanity );
 			} }
 		];
 
@@ -1975,6 +1983,50 @@ var MainMenu = ( function() {
 
 		vanityPanel.SetSceneOffset(Number(offset[0]), Number(offset[1]), Number(offset[2]));
 		vanityPanel.SetSceneRotation(Number(rotation[0]), Number(rotation[1]), Number(rotation[2]));
+	}
+
+	function _DebugCreateVanityModel(justUpdate = false) {
+		let playerIdx = Number($( '#vanitydebug_player' ).GetSelected().id);
+		let vanityData = $( '#vanitydebug_vanityData' ).text;
+
+		let vanityPanel = $('#MainMenuVanityPlayers');
+		if(!vanityPanel) {
+			_VanityDebugMsg('_DebugCreateVanityModel::Panel MainMenuVanityPlayers not exists.');
+			return;
+		}
+
+		_VanityDebugMsg('Creating vanity model with index '+playerIdx);
+
+		let oSettings = ItemInfo.GetOrUpdateVanityCharacterSettings();
+
+		oSettings.vanityData = vanityData;
+		oSettings.xuid = "";
+		oSettings.playerIdx = playerIdx;
+		oSettings.isLocalPlayer = false;
+
+		if(!oSettings.vanityData) // using default data (ct, awp)
+			oSettings.vanityData = "ct,17293822569102709677,17293822569102709669,rifle4,17293822569102704649";
+
+		_VanityDebugMsg("Vanity data of "+playerIdx+": "+oSettings.vanityData);
+
+		oSettings = _CreateVanitySettings(oSettings);
+
+		_UpdateOrCreateVanityPanel( playerIdx, oSettings );
+		_UpdateVanityInfoPanel( playerIdx, oSettings );
+	}
+
+	function _DebugDeleteVanityModel() {
+		let playerIdx = Number($( '#vanitydebug_player' ).GetSelected().id);
+		_VanityDebugMsg('DELETING '+playerIdx)
+
+		VanityPlayerInfo.DeleteVanityInfoPanel($('#MainMenuVanityInfo'), playerIdx);
+
+		let vanityPanel = $('#MainMenuVanityPlayers');
+		vanityPanel.SetActiveSceneContext( playerIdx );
+		vanityPanel.SetSceneModel( "models/crow.mdl" );
+		vanityPanel.ResetAnimation( false );
+	
+		
 	}
 
 	return {
@@ -2038,7 +2090,9 @@ var MainMenu = ( function() {
 		OpenSubscriptionUpsell				: _OpenSubscriptionUpsell,
 		UpdateUnlockCompAlert				: _UpdateUnlockCompAlert,
 		ShowDevContextMenu					: _ShowDevContextMenu,
-		DebugUpdateVanityModel: _DebugUpdateVanityModel
+		DebugUpdateVanityModel: _DebugUpdateVanityModel,
+		DebugCreateVanityModel: _DebugCreateVanityModel,
+		DebugDeleteVanityModel: _DebugDeleteVanityModel
 	};
 })();
 
@@ -2068,6 +2122,7 @@ var MainMenu = ( function() {
 	$.RegisterForUnhandledEvent( 'PanoramaComponent_MyPersona_InventoryUpdated', MainMenu.InventoryUpdated );
 	$.RegisterForUnhandledEvent( "PanoramaComponent_Lobby_MatchmakingSessionUpdate", MainMenu.LobbyPlayerUpdated );
 	$.RegisterForUnhandledEvent( "PanoramaComponent_Lobby_PlayerUpdated", MainMenu.LobbyPlayerUpdated );
+	$.RegisterForUnhandledEvent( "PanoramaComponent_Lobby_PlayerRemoved", MainMenu.LobbyPlayerUpdated );
 	$.RegisterForUnhandledEvent( 'InventoryItemPreview', MainMenu.OnInventoryInspect );
 	$.RegisterForUnhandledEvent( 'LootlistItemPreview', MainMenu.OnLootlistItemPreview );
 	$.RegisterForUnhandledEvent( 'ShowXrayCasePopup', MainMenu.OnShowXrayCasePopup );
