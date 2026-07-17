@@ -27,7 +27,6 @@ var PopupGenerateSelectSticker = ( function()
             elItem.SetPanelEvent( 'onactivate', function()
             {
                 var callbackHandle = $.GetContextPanel().GetAttributeInt( "callback", -1 );
-                $.Msg(callbackHandle)
 		        if ( callbackHandle != -1 )
 		        {
 		        	UiToolkitAPI.InvokeJSCallback( callbackHandle, item.id, $.GetContextPanel().GetAttributeInt( "slot", 0 ) );

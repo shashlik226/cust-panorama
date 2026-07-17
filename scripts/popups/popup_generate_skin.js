@@ -138,17 +138,22 @@ var PopupGenerateSkins = ( function()
 	{
 		var itemId = _GetSelectedWeaponFauxItemId();
 
-		var schema = JSON.parse(InventoryAPI.BuildItemSchemaDefJSON( itemId ));
+		var schema = InventoryAPI.BuildItemSchemaDefJSON( itemId );
+		if(schema != undefined)
+		{
+			var schemaJSO = JSON.parse(schema);
 
-		$.GetContextPanel().FindChildInLayoutFile('StickersGroup').SetHasClass('hidden', !schema.hasOwnProperty('stickers'))
+			$.GetContextPanel().FindChildInLayoutFile('StickersGroup').SetHasClass('hidden', !schemaJSO.hasOwnProperty('stickers'))
 
-		if(schema.hasOwnProperty('stickers')) {
-			var availableSlots = Object.keys(schema['stickers']).length;
-			for (var i = 0; i < 5; i++) {
-				var stickerPanel = $.GetContextPanel().FindChildInLayoutFile('sticker'+i);
-				stickerPanel.SetHasClass('hidden', !schema['stickers'].hasOwnProperty(i.toString()));
+			if(schemaJSO.hasOwnProperty('stickers')) {
+				var availableSlots = Object.keys(schemaJSO['stickers']).length;
+				for (var i = 0; i < 5; i++) {
+					var stickerPanel = $.GetContextPanel().FindChildInLayoutFile('sticker'+i);
+					stickerPanel.SetHasClass('hidden', !schemaJSO['stickers'].hasOwnProperty(i.toString()));
+				}
 			}
 		}
+		
 
 		_FillDropdown();
 		_UpdateWeaponPreview();
