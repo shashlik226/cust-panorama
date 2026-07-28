@@ -70,6 +70,10 @@
 				<Label class="DropDownName" text="Wear:" />
     			<TextEntry maxchars="4" textmode="numeric" id="PaintWeer" class="Width-250" text="0.00"/>
 			</Panel>
+			<Panel class="Group">
+				<Label class="DropDownName" text="Nametag:" />
+    			<TextEntry maxchars="100" id="WeaponNametag" class="Width-250" text=""/>
+			</Panel>
 			<ToggleButton id="includeStattrak" class="PopupButton Row" onactivate="PopupGenerateSkins.ChangeStattrakState()">
 				<Label text="Include StatTrak™"/>
 			</ToggleButton>

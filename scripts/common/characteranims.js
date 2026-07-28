@@ -118,20 +118,6 @@ var CharacterAnims = ( function()
 		
 		var playerPanel = settings.panel;
 
-		if(sceneContext != null) {
-			playerPanel.SetActiveSceneContext( sceneContext );
-			// z x y
-			let arr = [
-				[-80, 0, 0],
-				[-140, 35, 2],
-				[-170, -40, 2],
-				[-200, 80, 2],
-				[-200, -80, 2]
-			];
-			let offset = arr[sceneContext];
-			playerPanel.SetSceneOffset(offset[0], offset[1], offset[2]);
-		}
-
 		_CancelScheduledAnim( playerPanel );
 		_ResetLastRandomAnimHandle( playerPanel );
 		
@@ -206,6 +192,19 @@ var CharacterAnims = ( function()
 		{
 			                                                                            
 			playerPanel.SetAmbientLightColor( settings.ambientLightColor[ 0 ], settings.ambientLightColor[ 1 ], settings.ambientLightColor[ 2 ] );
+		}
+
+		if(sceneContext != null) {
+			// z x y
+			let arr = [
+				[-80, 0, 0],
+				[-170, 40, 2],
+				[-170, -40, 2],
+				[-200, 80, 2],
+				[-200, -80, 2]
+			];
+			let offset = arr[sceneContext];
+			playerPanel.SetSceneOffset(offset[0], offset[1], offset[2]);
 		}
 	};
 

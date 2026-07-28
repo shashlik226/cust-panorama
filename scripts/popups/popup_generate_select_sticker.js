@@ -35,6 +35,11 @@ var PopupGenerateSelectSticker = ( function()
 		        $.DispatchEvent( 'UIPopupButtonClicked', '' );
             }.bind( undefined ) );
 
+            elItem.SetPanelEvent( 'oncontextmenu', function()
+            {
+                SteamOverlayAPI.CopyTextToClipboard( item.itemid );
+            }.bind( undefined ) );
+
             elItem.SetPanelEvent( 'onmouseover', function()
             {
                 UiToolkitAPI.ShowCustomLayoutParametersTooltip('items' + item.id, 'JsItemTooltip', 'file://{resources}/layout/tooltips/tooltip_inventory_item.xml', 'itemid=' + item.itemid);
@@ -62,6 +67,10 @@ var PopupGenerateSelectSticker = ( function()
 
 			if(itemName == '' || itemName == undefined || !itemName)
 				continue;
+
+            var oTags = InventoryAPI.BuildItemTagsObject( fauxItemId );
+            if (JSON.stringify(oTags).includes('TournamentTeam'))
+                continue;
 
 			items.push({name: itemName, id: i, itemid: fauxItemId});
 		}

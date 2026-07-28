@@ -247,6 +247,8 @@ var PopupGenerateSkins = ( function()
 
 		var rarity = $.GetContextPanel().FindChildInLayoutFile('Rarity').GetSelected().GetAttributeString( "value", "" );
 		var quality = $.GetContextPanel().FindChildInLayoutFile('Quality').GetSelected().GetAttributeString( "value", "" );
+	
+		var nametag = $.GetContextPanel().FindChildInLayoutFile('WeaponNametag').text;
 
 		var includeStattrak = $.GetContextPanel().FindChildInLayoutFile('includeStattrak').IsSelected();
 
@@ -261,8 +263,11 @@ var PopupGenerateSkins = ( function()
 		if(wear == '')
 			wear = (Math.random()).toFixed(6);
 
-		if(rarity != "-1")
+		if(rarity != '-1')
 			options += `rarity=${rarity} `;
+	
+		if(nametag != '')
+			options += `\"name=${nametag}\" `;
 
 		if(includeStattrak) {
 			options += `stattrak=1 `;
@@ -289,9 +294,10 @@ var PopupGenerateSkins = ( function()
 		UiToolkitAPI.ShowCustomLayoutPopupParameters(
 			'',
 			'file://{resources}/layout/popups/popup_inventory_inspect.xml',
-			'itemid=' + _GetSelectedWeaponFauxItemId() +
-			'&' + 'inspectonly=true' +
-			'&' + 'viewfunc=primary',
+			'itemid=' + _GetSelectedWeaponFauxItemId()
+			+ '&extrapopupfullscreenstyle=solidbkgnd'
+			+ '&inspectonly=true'
+			+ '&viewfunc=primary',
 			'none'
 		);
 	}

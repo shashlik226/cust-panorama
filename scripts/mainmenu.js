@@ -121,6 +121,8 @@ var MainMenu = ( function() {
 		videoPlayer.SetMovie( "file://{resources}/videos/" + backgroundMovie + ".webm" );
 		videoPlayer.SetSound( 'UIPanorama.BG_' + backgroundMovie );
 		videoPlayer.Play();
+
+		_SetVanityLightingBasedOnBackgroundMovie();
 	};
 
 	var _OnShowMainMenu = function()
@@ -781,20 +783,17 @@ var MainMenu = ( function() {
 		if ( !MyPersonaAPI.IsInventoryValid() ) {
 			return;
 		}
+
 		if ( _m_bVanityAnimationAlreadyStarted ) {
 			_VanityDebugMsg("_InitVanity has been called, but vanity arleady started");
 			_LobbyPlayerUpdated(true);
 			return;
 		}
-		
-		let vanityPanel = $('#MainMenuVanityPlayers');
-		if(!vanityPanel)
-			return;
-	
-		vanityPanel.CreateSceneContexts( 5 );
 
 		_LobbyPlayerUpdated();
 		_m_bVanityAnimationAlreadyStarted = true;
+
+		$.GetContextPanel().FindChildTraverse('vanitydebug_entrys').visible = m_bVanityDebugEnabled;
 	};
 
 	function _LobbyPlayerUpdated(forceUpdate = false)
@@ -818,9 +817,6 @@ var MainMenu = ( function() {
         ].join(',');
 
 		if(!PartyListAPI.IsPartySessionActive()) {
-			if(!$('#MainMenuVanityPlayers')) //nonoonon
-				return;
-
 			_VanityDebugMsg('Party is not active');
 
 			oSettings.vanityData = localVanityData;
@@ -829,12 +825,11 @@ var MainMenu = ( function() {
 			oSettings.isLocalPlayer = true;
 
 			const bIsVanityUpdated = forceUpdate == true ? true : ( m_latestVaniyData[0] ? oSettings.vanityData != m_latestVaniyData[0] : true );
-			_VanityDebugMsg("Vanity data of 0: "+bIsVanityUpdated + " | " + forceUpdate);
 
 			a_currentVaniyData[0] = _CreateVanitySettings(oSettings);
 			m_latestVaniyData[0] = oSettings.vanityData;
 
-			_VanityDebugMsg("Vanity data of 0: "+m_latestVaniyData[0]);
+			_VanityDebugMsg(`Vanity data of local: '${m_latestVaniyData[0]}' isUpdated: ${bIsVanityUpdated} isForce: ${forceUpdate}`);
 
 			if(bIsVanityUpdated)
 				_UpdateOrCreateVanityPanel( 0, a_currentVaniyData[0] );
@@ -857,12 +852,11 @@ var MainMenu = ( function() {
 
 			// need be sure, maybe m_latestVaniyData[i] not initialized
 			const bIsVanityUpdated = forceUpdate == true ? true : ( m_latestVaniyData[i] ? oSettings.vanityData != m_latestVaniyData[i] : true );
-			_VanityDebugMsg("vanity "+i+" updated: "+bIsVanityUpdated + " | " + forceUpdate);
 		
 			a_currentVaniyData[i] = _CreateVanitySettings(oSettings);
 			m_latestVaniyData[i] = oSettings.vanityData;
 
-			_VanityDebugMsg("Vanity data of "+i+": "+m_latestVaniyData[i]);
+			_VanityDebugMsg(`Vanity data of ${i}: '${m_latestVaniyData[0]}' isUpdated: ${bIsVanityUpdated} isForce: ${forceUpdate}`);
 
 			if(bIsSelf && bIsVanityUpdated)
 				_ApplyVanitySettingsToLobbyMetadata(oSettings);
@@ -879,10 +873,18 @@ var MainMenu = ( function() {
 			_VanityDebugMsg('Warning! oSettings of player'+playerIdx+' is empty, aborting');
 			return;
 		}
-		let vanityPanel = $('#MainMenuVanityPlayers');
+		let vanityPanel = $('#MainMenuVanityPlayer'+playerIdx);
 		if(!vanityPanel) {
-			_VanityDebugMsg('_UpdateOrCreateVanityPanel::Panel MainMenuVanityPlayers not exists.');
-			return;
+			_VanityDebugMsg('Vanity panel '+playerIdx+' not exists, creating');
+			vanityPanel = $.CreatePanel('ItemPreviewPanel', $('#JsMainmenu_Vanity-Container'), "MainMenuVanityPlayer"+playerIdx, {
+				class: 'full-width full-height',
+				manifest: 'resource/ui/econ/ItemModelPanelCharMainMenu.res',
+				item: 'models/player/custom_player/legacy/tm_phoenix.mdl',
+				mouse_rotate: false,
+				enable_floorshadow: true,
+				hittest: false,
+				style: 'z-index: -'+playerIdx+';'
+			});
 		}
 
 		oSettings.activity = 'ACT_CSGO_UIPLAYER_WALKUP';
@@ -890,23 +892,23 @@ var MainMenu = ( function() {
 		oSettings.panel = vanityPanel;
 
 		CharacterAnims.PlayAnimsOnPanel( oSettings, false, true, playerIdx );
-		_SetVanityLightingBasedOnBackgroundMovie( vanityPanel, playerIdx );
+		_SetVanityLightingBasedOnBackgroundMovie( vanityPanel );
 	}
 
 	// start credits to Deformisani SAS
 	function _UpdateVanityInfoPanel( playerIdx, oSettings )
 	{
-		let vanityPanel = $('#MainMenuVanityInfo');
-		if(!vanityPanel) {
-			_VanityDebugMsg('_UpdateVanityInfoPanel::Panel MainMenuVanityInfo not exists.');
+		let vanityInfoPanel = $('#MainMenuVanityInfo');
+		if(!vanityInfoPanel) {
+			_VanityDebugMsg('Panel MainMenuVanityInfo not exists.');
 			return;
 		}
 
 		const vanityInfoPanelId = "id-player-vanity-info-" + playerIdx;
-        let elVanityInfoPanel = vanityPanel.FindChildInLayoutFile(vanityInfoPanelId);
+        let elVanityInfoPanel = vanityInfoPanel.FindChildInLayoutFile(vanityInfoPanelId);
 
         if (!elVanityInfoPanel) {
-            elVanityInfoPanel = $.CreatePanel('Button', vanityPanel, vanityInfoPanelId);
+            elVanityInfoPanel = $.CreatePanel('Button', vanityInfoPanel, vanityInfoPanelId);
             elVanityInfoPanel.BLoadLayout('file://{resources}/layout/vanity_player_info.xml', false, false);
             elVanityInfoPanel.AddClass('vanity-info-loc-' + playerIdx);
 
@@ -924,11 +926,8 @@ var MainMenu = ( function() {
 	{
 	    if ( !elPanel || !elPanel.IsValid() ) return;
 
-	    var elVanityModel = $( '#MainMenuVanityPlayers' );
-		
+	    var elVanityModel = $( '#MainMenuVanityPlayer'+index );
 	    if ( elVanityModel ) {
-	        elVanityModel.SetActiveSceneContext( index );
-
 	        var bonePos = elVanityModel.GetBonePositionInPanelSpace( 'pelvis_0' );
 
 			try {
@@ -967,18 +966,16 @@ var MainMenu = ( function() {
 	{
 		let partySize = PartyListAPI.IsPartySessionActive() ? PartyListAPI.GetCount() : 1;
 		let vanityData = Object.keys(m_latestVaniyData).length;
-		_VanityDebugMsg('latest vanity data '+vanityData)
+
 		for (let i = 0; i < vanityData; i++) {
 			if(i < partySize) continue;
 
-			_VanityDebugMsg('DELETING '+i)
+			_VanityDebugMsg('Deleting vanity panel '+i)
 		
 			VanityPlayerInfo.DeleteVanityInfoPanel($('#MainMenuVanityInfo'), i);
 		
-		    let vanityPanel = $('#MainMenuVanityPlayers');
-		    vanityPanel.SetActiveSceneContext( i );
-			vanityPanel.SetSceneModel( "models/crow.mdl" );
-			vanityPanel.ResetAnimation( false );
+		    let vanityPanel = $('#MainMenuVanityPlayer'+i);
+			vanityPanel.DeleteAsync(0);
 
 			delete m_latestVaniyData[i];
 		}
@@ -989,30 +986,38 @@ var MainMenu = ( function() {
 		$.Msg('[VANITY DEBUG] '+msg);
 	}
 
-	var _SetVanityLightingBasedOnBackgroundMovie = function( vanityPanel, i )
+	var _SetVanityLightingBasedOnBackgroundMovie = function( vanityPanel = null )
 	{
 		var elBackground = $.GetContextPanel().FindChildInLayoutFile( 'MainMenuMovie' );
 		if(!elBackground)
 			return;
 
+		if(vanityPanel == null)
+		{
+			for (let i = 0; i < 5; i++) {
+				var elVanityModel = $( '#MainMenuVanityPlayer'+i );
+	    		if ( elVanityModel ) {
+					_VanityDebugMsg('Updating vanity lighting on '+i);
+					_SetVanityLightingBasedOnBackgroundMovie( elVanityModel );
+				}
+			}
+			return;
+		}
+
 		var backgroundMap = elBackground.GetAttributeString( 'data-type', 'anubis' );
 
-		vanityPanel.SetActiveSceneContext( i );
 		vanityPanel.RestoreLightingState();
 
 		if ( backgroundMap === 'cbble' )
 		{
 			vanityPanel.SetFlashlightAmount( 1.0 );
-			                                               
-			                                                            
-			                                                           
 			vanityPanel.SetFlashlightColor( 0.81, 0.92, 1.00 );
 			vanityPanel.SetAmbientLightColor( 0.12, 0.21, 0.46 );
 
 			vanityPanel.SetDirectionalLightModify( 0 );
 			vanityPanel.SetDirectionalLightColor( 0.13, 0.14, 0.13 );
 			vanityPanel.SetDirectionalLightDirection( -0.81, 0.41, 0.43 );
-			
+
 			vanityPanel.SetDirectionalLightModify( 1 );
 			vanityPanel.SetDirectionalLightColor( 0.82, 0.19, 0.08 );
 			vanityPanel.SetDirectionalLightDirection( 0.62, 0.74, -0.25 );
@@ -1021,15 +1026,10 @@ var MainMenu = ( function() {
 			vanityPanel.SetDirectionalLightModify( 2 );
 			vanityPanel.SetDirectionalLightColor( 0.72, 1.40, 1.68 );
 			vanityPanel.SetDirectionalLightDirection( 0.50, -0.69, -0.52 );
-
-			                                                   
 		}
 		else if ( backgroundMap === 'blacksite' )
 		{
 			vanityPanel.SetFlashlightAmount( 1 );
-			                                               
-			                                                           
-			                                                            
 			vanityPanel.SetFlashlightColor( 4, 4, 4);
 			vanityPanel.SetAmbientLightColor( 0.16, 0.26, 0.30 );
 			
@@ -1048,18 +1048,14 @@ var MainMenu = ( function() {
 		else if ( backgroundMap === 'sirocco_night' )
 		{
 			vanityPanel.SetFlashlightAmount( 2 );
-			                                               
-			                                                            
-			                                                       
 			vanityPanel.SetFlashlightFOV( 45 );
-			                                                            
 			vanityPanel.SetFlashlightColor( 1.8, 1.8, 2 );
 			vanityPanel.SetAmbientLightColor( 0.13, 0.17, 0.29 );
-			
+
 			vanityPanel.SetDirectionalLightModify( 0 );
 			vanityPanel.SetDirectionalLightColor(0.00, 0.19, 0.38 );
 			vanityPanel.SetDirectionalLightDirection( 0.22, 0.67, -0.71 );
-			
+
 			vanityPanel.SetDirectionalLightModify( 1 );
 			vanityPanel.SetDirectionalLightColor( 0.05, 0.09, 0.21) ;
 			vanityPanel.SetDirectionalLightDirection(-0.86, -0.18, -0.47 );
@@ -1944,15 +1940,7 @@ var MainMenu = ( function() {
 			} },
 			{ label: 'Rebuild Vanity', jsCallback: function() {
 				$('#MainMenuVanityInfo').RemoveAndDeleteChildren();
-				$('#MainMenuVanityPlayers').DeleteAsync(.0);
-				let vanityPanel = $.CreatePanel('ItemPreviewPanel', $('#JsMainmenu_Vanity-Container'), "MainMenuVanityPlayers", {
-					class: 'full-width full-height',
-					manifest: 'resource/ui/econ/ItemModelPanelCharMainMenu.res',
-					item: 'models/player/custom_player/legacy/tm_phoenix.mdl',
-					mouse_rotate: false,
-					enable_floorshadow: true,
-					hittest: false
-				});
+				$('#JsMainmenu_Vanity-Container').RemoveAndDeleteChildren();
 				_m_bVanityAnimationAlreadyStarted = false;
 				m_latestVaniyData = {};
 				$.Schedule( .3, _InitVanity );
@@ -1963,8 +1951,6 @@ var MainMenu = ( function() {
 	}
 
 	function _RegisterKeyForDevMenu() {
-		
-
 		$.RegisterKeyBind($.GetContextPanel(), "key_delete", _ShowDevContextMenu);
 	}
 
@@ -1973,13 +1959,12 @@ var MainMenu = ( function() {
 		let offset = $("#vanitydebug_offset").text.split(" ");
 		let rotation = $("#vanitydebug_rotation").text.split(" ");
 
-		let vanityPanel = $('#MainMenuVanityPlayers');
+		let vanityPanel = $('#MainMenuVanityPlayer'+playerIdx);
 		if(!vanityPanel) {
-			_VanityDebugMsg('_DebugUpdateVanityModel::Panel MainMenuVanityPlayers not exists.');
+			_VanityDebugMsg('Vanity panel '+playerIdx+' not exists.');
 			return;
 		}
 		_VanityDebugMsg('Selected for debug player: '+playerIdx);
-		vanityPanel.SetActiveSceneContext( Number(playerIdx) );
 
 		vanityPanel.SetSceneOffset(Number(offset[0]), Number(offset[1]), Number(offset[2]));
 		vanityPanel.SetSceneRotation(Number(rotation[0]), Number(rotation[1]), Number(rotation[2]));
@@ -1989,13 +1974,7 @@ var MainMenu = ( function() {
 		let playerIdx = Number($( '#vanitydebug_player' ).GetSelected().id);
 		let vanityData = $( '#vanitydebug_vanityData' ).text;
 
-		let vanityPanel = $('#MainMenuVanityPlayers');
-		if(!vanityPanel) {
-			_VanityDebugMsg('_DebugCreateVanityModel::Panel MainMenuVanityPlayers not exists.');
-			return;
-		}
-
-		_VanityDebugMsg('Creating vanity model with index '+playerIdx);
+		_VanityDebugMsg('Creating debug vanity model with index '+playerIdx);
 
 		let oSettings = ItemInfo.GetOrUpdateVanityCharacterSettings();
 
@@ -2017,16 +1996,19 @@ var MainMenu = ( function() {
 
 	function _DebugDeleteVanityModel() {
 		let playerIdx = Number($( '#vanitydebug_player' ).GetSelected().id);
-		_VanityDebugMsg('DELETING '+playerIdx)
+
+		let vanityPanel = $('#MainMenuVanityPlayer'+playerIdx);
+		if(!vanityPanel) {
+			_VanityDebugMsg('Vanity panel '+playerIdx+' not exists.');
+			return;
+		}
+	
+		_VanityDebugMsg('Deleting debug vanity panel '+playerIdx)
 
 		VanityPlayerInfo.DeleteVanityInfoPanel($('#MainMenuVanityInfo'), playerIdx);
 
-		let vanityPanel = $('#MainMenuVanityPlayers');
-		vanityPanel.SetActiveSceneContext( playerIdx );
-		vanityPanel.SetSceneModel( "models/crow.mdl" );
-		vanityPanel.ResetAnimation( false );
-	
-		
+		let vanityPanel = $('#MainMenuVanityPlayer'+playerIdx);
+		vanityPanel.DeleteAsync(0);
 	}
 
 	return {

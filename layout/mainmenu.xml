@@ -33,14 +33,6 @@
 		<snippet name="MainMenuVanitySnippet">
 			<Panel>
 				<Panel id="JsMainmenu_Vanity-Container" class="mainmenu-vanity MainMenuModeOnly">
-					<ItemPreviewPanel id="MainMenuVanityPlayers"
-                                      class="full-width full-height"
-                                      manifest="resource/ui/econ/ItemModelPanelCharMainMenu.res"
-                                      item="models/player/custom_player/legacy/tm_phoenix.mdl"
-                                      mouse_rotate="false"
-                                      enable_floorshadow="true"
-                                      hittest="false">
-					</ItemPreviewPanel>
 				</Panel>
 
 			</Panel>
@@ -69,7 +61,7 @@
 					<Panel id="MainMenuVanityInfo" class="MainMenuModeOnly" hittest="false" />
 					
 					<Panel id="JsMainMenuRightColumn" class="mainmenu-right-column">
-						<Panel id="vanitydebug_entrys" hittest="true" style="visibility: collapse;">
+						<Panel id="vanitydebug_entrys" hittest="true">
 							<Label text="Player"/>
 							<DropDown id="vanitydebug_player" class="PopupButton White" menuclass="DropDownMenu" style="margin-bottom: 5px;">
 								<Label id="0" text="Player 0" />
