@@ -780,6 +780,8 @@ var MainMenu = ( function() {
 
 	var _InitVanity = function()
 	{
+		$.GetContextPanel().FindChildInLayoutFile('vanitydebug_entrys').visible = m_bVanityDebugEnabled;
+
 		if ( !MyPersonaAPI.IsInventoryValid() ) {
 			return;
 		}
@@ -792,13 +794,17 @@ var MainMenu = ( function() {
 
 		_LobbyPlayerUpdated();
 		_m_bVanityAnimationAlreadyStarted = true;
-
-		$.GetContextPanel().FindChildTraverse('vanitydebug_entrys').visible = m_bVanityDebugEnabled;
 	};
 
 	function _LobbyPlayerUpdated(forceUpdate = false)
 	{
 		_VanityDebugMsg("_LobbyPlayerUpdated executed");
+
+		if(!$('#JsMainmenu_Vanity-Container')) {
+			_VanityDebugMsg('Vanity container doesnt exists, skip');
+			return;
+		}
+
 		_HideVanityPanels();
 
 		let partySize = PartyListAPI.GetCount();
@@ -2006,8 +2012,6 @@ var MainMenu = ( function() {
 		_VanityDebugMsg('Deleting debug vanity panel '+playerIdx)
 
 		VanityPlayerInfo.DeleteVanityInfoPanel($('#MainMenuVanityInfo'), playerIdx);
-
-		let vanityPanel = $('#MainMenuVanityPlayer'+playerIdx);
 		vanityPanel.DeleteAsync(0);
 	}
 
