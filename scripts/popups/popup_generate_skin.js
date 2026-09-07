@@ -3,6 +3,7 @@
 var PopupGenerateSkins = ( function()
 {
     var jsStickerCallbackHandle;
+    var jsPaintSelectCallbackHandle;
 	var weapons = [ 4,32,61,2,36,30,3,63,1,64,7,16,60,13,10,40,39,8,9,11,38,17,34,33,23,24,19,26,35,25,29,27,14,28,49,42,59,500,505,506,507,508,509,515,512,516,514,522,519,523,520,521,517,518,503,525,5027,5030,5031,5032,5033,5034,5035,4725,1314 ];
     var stickers = {};
 	var skins = [];
@@ -18,27 +19,28 @@ var PopupGenerateSkins = ( function()
 	    	enable_floorshadow: true,
 	    	mouse_rotate: true
 	    });
-	    $.GetContextPanel().FindChildInLayoutFile('Rarity').SetSelected( 'rare' );
+	    $.GetContextPanel().FindChildInLayoutFile('Rarity').SetSelected( 'rarity3' );
 	    $.GetContextPanel().FindChildInLayoutFile('Quality').SetSelected( 'unique' );
 
+		var elWeaponDropdown = $.GetContextPanel().FindChildInLayoutFile('Weapon');
 		weapons.forEach(weapon => {
 			var itemName = InventoryAPI.GetItemName(InventoryAPI.GetFauxItemIDFromDefAndPaintIndex( weapon, 0 ));
-			var elDropdown = $.GetContextPanel().FindChildInLayoutFile('Weapon');
-			var newEntry = $.CreatePanel('Label', elDropdown, "item"+weapon, {
+			var newEntry = $.CreatePanel('Label', elWeaponDropdown, "item"+weapon, {
 				class: 'DropDownMenu Width-250 White',
 				value: weapon,
 				text: itemName
 			});
 
-			elDropdown.AddOption(newEntry);
+			elWeaponDropdown.AddOption(newEntry);
 		});
-		$.GetContextPanel().FindChildInLayoutFile('Weapon').SetSelected( 'item'+weapons[0] );
-		$.GetContextPanel().FindChildInLayoutFile('Weapon').SetPanelEvent('oninputsubmit', _OnWeaponDropdownChange);
+		elWeaponDropdown.SetSelected( 'item'+weapons[0] );
+		elWeaponDropdown.SetPanelEvent('oninputsubmit', _OnWeaponDropdownChange);
 
 		_GetAllPaints();
 		
 		_OnWeaponDropdownChange();
         jsStickerCallbackHandle = UiToolkitAPI.RegisterJSCallback( _UpdateSticker );
+        jsPaintSelectCallbackHandle = UiToolkitAPI.RegisterJSCallback( _SelectPaintCallback );
 	}
 
 	function _GetAllPaints()
@@ -119,7 +121,7 @@ var PopupGenerateSkins = ( function()
 		elDropdown.AddOption(fieldEntry);
 
 		items.forEach(item => {
-			var newEntry = $.CreatePanel('Label', elDropdown, "item"+item.id, {
+			var newEntry = $.CreatePanel('Label', elDropdown, "paint"+item.id, {
 				class: 'DropDownMenu Width-250 White',
 				value: item.id,
 				text: item.name+` (${item.id})`
@@ -128,7 +130,7 @@ var PopupGenerateSkins = ( function()
 			elDropdown.AddOption(newEntry);
 		});
 
-		elDropdown.SetSelected( 'item'+items[0].id );
+		elDropdown.SetSelected( 'paint'+items[0].id );
 		elDropdown.SetPanelEvent('oninputsubmit', _UpdateWeaponPreview);
 
 		latestWeaponSlot = slot;
@@ -153,7 +155,6 @@ var PopupGenerateSkins = ( function()
 				}
 			}
 		}
-		
 
 		_FillDropdown();
 		_UpdateWeaponPreview();
@@ -173,6 +174,7 @@ var PopupGenerateSkins = ( function()
 		var skinId = $.GetContextPanel().FindChildInLayoutFile('Paint').GetSelected().GetAttributeString( "value", "" );
 
 		$.GetContextPanel().FindChildInLayoutFile('PaintFieldGroup').SetHasClass('hidden', skinId != 'showfromfield');
+		$.GetContextPanel().FindChildInLayoutFile('PaintButtonGroup').SetHasClass('hidden', skinId != 'showfromfield');
 
 		if(skinId == 'showfromfield')
 			skinId = $.GetContextPanel().FindChildInLayoutFile('PaintField').text;
@@ -238,7 +240,34 @@ var PopupGenerateSkins = ( function()
         qualityDropDown.enabled = !isSelected;
     }
 
-  	function _CreateItem()
+    function _SelectPaintAction(slot)
+    {	
+		var globalObject = UiToolkitAPI.GetGlobalObject();
+        if(globalObject.hasOwnProperty('selectPaintCache')) {
+            UiToolkitAPI.ShowCustomLayoutPopupParameters( 
+			    '', 
+			    'file://{resources}/layout/popups/popup_generate_select_paint.xml', 
+			    'callback='+jsPaintSelectCallbackHandle 
+        	);
+			return;
+        }
+	
+		UiToolkitAPI.ShowGenericPopupOk( "WARNING", "Your game will be freeze on ~15-30 seconds for the first time\n\nPress OK to continue...", "", function() {
+			UiToolkitAPI.ShowCustomLayoutPopupParameters( 
+			    '', 
+			    'file://{resources}/layout/popups/popup_generate_select_paint.xml', 
+			    'callback='+jsPaintSelectCallbackHandle 
+        	);
+		});
+    }
+
+	function _SelectPaintCallback(item) {
+		$.GetContextPanel().FindChildInLayoutFile('PaintField').text = item.paintId;
+		$.GetContextPanel().FindChildInLayoutFile('Weapon').SetSelected( 'item'+item.weaponId );
+		$.GetContextPanel().FindChildInLayoutFile('Rarity').SetSelected( 'rarity'+item.rarity );
+	}
+
+	function _CreateCreateItemCommand()
 	{
 		var weapon = $.GetContextPanel().FindChildInLayoutFile('Weapon').GetSelected().GetAttributeString( "value", "" );
         var skin = _GetSelectedPaintId();
@@ -286,7 +315,12 @@ var PopupGenerateSkins = ( function()
             options += `sticker${key}=${sticker.id} sticker${key}_wear=${sticker.wear} `;
         });
 
-        GameInterfaceAPI.ConsoleCommand(`rcon give_item ${weapon} 1 ${options} quality=${quality}`);
+		return `give_item ${weapon} 1 ${options} quality=${quality}`;
+	}
+
+  	function _CreateItem()
+	{
+        GameInterfaceAPI.ConsoleCommand(`rcon ${_CreateCreateItemCommand()}`);
 	}
 
 	function _Inspect()
@@ -302,20 +336,79 @@ var PopupGenerateSkins = ( function()
 		);
 	}
 
-	function _CopyItemID()
+	function _SaveSelectedOptions()
 	{
-		SteamOverlayAPI.CopyTextToClipboard( _GetSelectedWeaponFauxItemId() );
+		var obj = UiToolkitAPI.GetGlobalObject();
+		obj['skingenerator'] = {
+			weapon: $.GetContextPanel().FindChildInLayoutFile('Weapon').GetSelected().id,
+			rarity: $.GetContextPanel().FindChildInLayoutFile('Rarity').GetSelected().id,
+			quality: $.GetContextPanel().FindChildInLayoutFile('Quality').GetSelected().id,
+			paint: _GetSelectedPaintId(),
+			seed: $.GetContextPanel().FindChildInLayoutFile('PaintSeed').text,
+			wear: $.GetContextPanel().FindChildInLayoutFile('PaintWeer').text,
+			nametag: $.GetContextPanel().FindChildInLayoutFile('WeaponNametag').text,
+			stattrak: $.GetContextPanel().FindChildInLayoutFile('includeStattrak').IsSelected(),
+			stickers: stickers
+		};
+	}
+
+	function _LoadSavedOptions()
+	{
+		var obj = UiToolkitAPI.GetGlobalObject();
+
+		if(!obj['skingenerator'])
+			return;
+
+		$.GetContextPanel().FindChildInLayoutFile('Weapon').SetSelected(obj['skingenerator']['weapon']);
+		$.GetContextPanel().FindChildInLayoutFile('Rarity').SetSelected(obj['skingenerator']['rarity']);
+		$.GetContextPanel().FindChildInLayoutFile('Quality').SetSelected(obj['skingenerator']['quality']);
+		$.GetContextPanel().FindChildInLayoutFile('Paint').SetSelected('paint'+obj['skingenerator']['paint']);
+		$.GetContextPanel().FindChildInLayoutFile('PaintSeed').text = obj['skingenerator']['seed'];
+		$.GetContextPanel().FindChildInLayoutFile('PaintWeer').text = obj['skingenerator']['wear'];
+		$.GetContextPanel().FindChildInLayoutFile('WeaponNametag').text = obj['skingenerator']['nametag'];
+		$.GetContextPanel().FindChildInLayoutFile('includeStattrak').SetSelected(obj['skingenerator']['stattrak']);
+
+		Object.keys(obj['skingenerator']['stickers']).forEach(function(key) {
+			var sticker = obj['skingenerator']['stickers'][key];
+			_UpdateSticker(sticker.id, key);
+		});
+	}
+
+	function _OpenOptionsMenu()
+	{
+		var items = [
+			{ label: 'Copy Faux ItemId to Clipboard', jsCallback: function() {
+				SteamOverlayAPI.CopyTextToClipboard( _GetSelectedWeaponFauxItemId() );
+			} },
+			{ label: 'Copy create command to Clipboard', jsCallback: function() {
+				SteamOverlayAPI.CopyTextToClipboard( _CreateCreateItemCommand() );
+			} },
+			{ label: 'Save preset', jsCallback: _SaveSelectedOptions },
+			{ label: 'Load preset', jsCallback: _LoadSavedOptions },
+			{ label: 'Clear cache', jsCallback: function() {
+				var obj = UiToolkitAPI.GetGlobalObject();
+				if(obj['selectPaintCache'])
+					delete obj['selectPaintCache'];
+				if(obj['selectPaintItemSetsCache'])
+					delete obj['selectPaintItemSetsCache'];
+				if(obj['selectStickerCache'])
+					delete obj['selectStickerCache'];
+			} },
+		];
+
+    	UiToolkitAPI.ShowSimpleContextMenu( '', 'SkinGeneratorContextMenu', items );
 	}
 
 	return {
         Init: _Init,
         UpdateWeaponPreview: _UpdateWeaponPreview,
-        CopyItemID: _CopyItemID,
         Inspect: _Inspect,
         SelectStickerAction: _SelectStickerAction,
         CreateItem: _CreateItem,
         ChangeStattrakState: _ChangeStattrakState,
-		OnWeaponDropdownChange: _OnWeaponDropdownChange
+		OnWeaponDropdownChange: _OnWeaponDropdownChange,
+		SelectPaintAction: _SelectPaintAction,
+		OpenOptionsMenu: _OpenOptionsMenu
 	};
 
 })();

@@ -25,14 +25,13 @@ var InpsectPurchaseBar = ( function()
 		var bFauxItemIdForPurchase = InventoryAPI.IsFauxItemID( m_itemid );
 		var priceOriginal = bFauxItemIdForPurchase ? ItemInfo.GetStoreOriginalPrice( m_itemid, 1 ) : '';
 
-		                                                          
-		                                                                                                                      
-		                                                           
-		                                                                                                                                                                                                    
-		                                                                                   
+		if( !priceOriginal )
+		{
+			elPanel.FindChildInLayoutFile( 'PurchaseBtn' ).AddClass( 'hidden' );
+			elPanel.FindChildInLayoutFile( 'PurchaseCountDropdown' ).AddClass( 'hidden' );
+		}
 
-		if ( !priceOriginal ||
-			( funcGetSettingCallback( 'inspectonly', 'false' ) === 'true' ) ||
+		if ( ( funcGetSettingCallback( 'inspectonly', 'false' ) === 'true' ) ||
 			!InventoryAPI.IsValidItemID( m_itemid )
 		)
 		{

@@ -121,14 +121,27 @@ var VanityPlayerInfo;
 		var winsNeededForRank = SessionUtil.GetNumWinsNeededForRank( skillgroupType );
 		var elRank = newPanel.FindChildInLayoutFile( 'vanity-skillgroup-frame' ); 
 
-		if ( wins < winsNeededForRank || ( wins >= winsNeededForRank && skillGroup < 1 ) || !PartyListAPI.GetFriendPrimeEligible( xuid ) )
-		{
+        if( !PartyListAPI.GetFriendPrimeEligible( xuid ) )
+        {
 			elRank.visible = false;
 			return;
-		}
+        }
 
 		var imageName = ( skillgroupType !== 'Competitive' ) ? skillgroupType : 'skillgroup';
-		elRank.SetImage( 'file://{images}/icons/skillgroups/' + imageName + skillGroup + '.svg' );
+
+		if ( wins < winsNeededForRank )
+		{
+			elRank.SetImage( 'file://{images}/icons/skillgroups/' + imageName + '_none.svg' );
+		}
+        else if (wins >= winsNeededForRank && skillGroup < 1)
+        {
+			elRank.SetImage( 'file://{images}/icons/skillgroups/' + imageName + '_expired.svg' );
+        }
+        else
+        {
+		    elRank.SetImage( 'file://{images}/icons/skillgroups/' + imageName + skillGroup + '.svg' );
+        }
+
 		elRank.visible = true;
     }
 

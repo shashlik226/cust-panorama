@@ -77,6 +77,25 @@
 							<Button class="FlatButton" style="width: 100%; margin: 5px;" onactivate="MainMenu.DebugUpdateVanityModel()">
 								<Label text="Update Vanity" hittest="false" />
 							</Button>
+						
+							<Label text="Lighting" style="margin-top: 10px;"/>
+							<Label text="DirectionalLightModify"/>
+							<TextEntry id="vanitydebug_lightModify" style="margin-bottom: 5px;" text="0" />
+							<Label text="DirectionalLightColor"/>
+							<TextEntry id="vanitydebug_lightColor" style="margin-bottom: 5px;" text="0 0 0" />
+							<Label text="DirectionalLightDirection"/>
+							<TextEntry id="vanitydebug_lightDirection" style="margin-bottom: 5px;" text="0 0 0" />
+							<Label text="DirectionalLightPulseFlicker"/>
+							<TextEntry id="vanitydebug_lightPulseFlicker" style="margin-bottom: 5px;" text="0 0 0 0" />
+							<Label text="DirectionalLightRotation"/>
+							<TextEntry id="vanitydebug_lightRotation" style="margin-bottom: 10px;" text="0 0 0" />
+							<Button class="FlatButton" style="width: 100%; margin: 5px;" onactivate="MainMenu.DebugVanityUpdateLighting()">
+								<Label text="Update Lighting" hittest="false" />
+							</Button>
+							<Button class="FlatButton" style="width: 100%; margin: 5px;" onactivate="MainMenu.DebugVanityRestoreLighting()">
+								<Label text="Restore Lighting" hittest="false" />
+							</Button>
+
 							<Label text="Vanity Data" style="margin-top: 10px;"/>
 							<TextEntry id="vanitydebug_vanityData" style="margin-bottom: 10px;" placeholder="team,agent,gloves,slot,weapon" text="ct,17293822569102709677,17293822569102709669,rifle4,17293822569102704649" />
 							<Button class="FlatButton" style="width: 100%; margin: 5px;" onactivate="MainMenu.DebugCreateVanityModel()">
@@ -130,7 +149,7 @@
 								<Label id="MainMenuPlayAlertText" class="navbar-btn__notification-text" text="#Store_Price_New"/>
 							</Panel>
 						</RadioButton>
-						<Frame class="mainmenu-navbar__btn-small--hidden MainMenuModeOnly" src="file://{resources}/layout/advertising_toggle.xml" />
+						<Frame class="mainmenu-navbar__btn-small mainmenu-navbar__btn-small--hidden MainMenuModeOnly" src="file://{resources}/layout/advertising_toggle.xml" />
 
 						<RadioButton id="MainMenuNavBarResumeGame"
 									class="mainmenu-navbar__btn-small PauseMenuModeOnly"
@@ -159,7 +178,7 @@
 						</Button>
 
 						<Button id="MainMenuNavBarReportServer"
-									class="mainmenu-navbar__btn-small--hidden PauseMenuModeOnly"
+									class="mainmenu-navbar__btn-small mainmenu-navbar__btn-small--hidden PauseMenuModeOnly"
 									onactivate="UiToolkitAPI.ShowCustomLayoutPopupParameters('', 'file://{resources}/layout/popups/popup_report_server.xml', '' );"
 									onmouseover="UiToolkitAPI.ShowTextTooltip( 'MainMenuNavBarReportServer', '#tooltip_navbar_report_server' );"
 									onmouseout="UiToolkitAPI.HideTextTooltip();">
@@ -188,7 +207,7 @@
 						</RadioButton>
 						                                             
 						<RadioButton id="MainMenuNavBarWatch"
-									class="mainmenu-navbar__btn-small--hidden MainMenuModeOnly"
+									class="mainmenu-navbar__btn-small MainMenuModeOnly"
 									group="NavBar"
 									onactivate="MainMenu.NavigateToTab('JsWatch', 'mainmenu_watch'); MainMenu.WatchBtnPressedUpdateAlert();"
 									onmouseover="UiToolkitAPI.ShowTextTooltip( 'MainMenuNavBarWatch', '#tooltip_navbar_watch' );"
@@ -200,7 +219,7 @@
 						</RadioButton>
 						                                             
 						<RadioButton id="MainMenuNavBarStats"
-									class="mainmenu-navbar__btn-small--hidden colored-icon MainMenuModeOnly"
+									class="mainmenu-navbar__btn-small mainmenu-navbar__btn-small--hidden colored-icon MainMenuModeOnly"
 									group="NavBar"
 									onactivate="MainMenu.NavigateToTab('JsPlayerStats', 'mainmenu_playerstats'); MainMenu.StatsBtnPressedUpdateAlert();"
 									onmouseover="UiToolkitAPI.ShowTextTooltip( 'MainMenuNavBarStats', '#tooltip_navbar_stats' );"
@@ -212,7 +231,7 @@
 						</RadioButton>
 
 						<RadioButton id="MainMenuNavBarOverwatch"
-									class="mainmenu-navbar__btn-small--hidden MainMenuModeOnly"
+									class="mainmenu-navbar__btn-small MainMenuModeOnly"
 									group="NavBar"
 									onactivate="MainMenu.NavigateToTab('JsOverwatch', 'mainmenu_overwatch');"
 									onmouseover="UiToolkitAPI.ShowTextTooltip( 'MainMenuNavBarOverwatch', '#tooltip_navbar_overwatch' );"
@@ -236,6 +255,7 @@
 									class="mainmenu-navbar__btn-small"
 									group="NavBar"
 									onactivate="MainMenu.NavigateToTab('JsSettings', 'settings/settings');"
+									oncontextmenu="MainMenu.ShowDevContextMenu();"
 									onmouseover="UiToolkitAPI.ShowTextTooltip( 'MainMenuNavBarSettings', '#tooltip_navbar_settings' );"
 									onmouseout="UiToolkitAPI.HideTextTooltip();">
 							<Image textureheight="32" texturewidth="-1" src="file://{images}/icons/ui/settings.svg" />
@@ -243,15 +263,6 @@
 								<Label class="navbar-btn__notification-text" text="{d:num_settings}"/> 
 							</Panel>
 						</RadioButton>
-
-						<Button id="MainMenuNavBarDEV"
-									class="mainmenu-navbar__btn-small"
-									group="NavBar"
-									onactivate="MainMenu.ShowDevContextMenu();"
-									onmouseover="UiToolkitAPI.ShowTextTooltip( 'MainMenuNavBarDEV', 'DEV' );"
-									onmouseout="UiToolkitAPI.HideTextTooltip();">
-							<Image textureheight="32" texturewidth="-1" src="file://{images}/icons/ui/bug.svg" />
-						</Button>
 		
 						<Panel class="vertical-align-bottom horizontal-center">
 							                                            

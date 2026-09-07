@@ -57,6 +57,9 @@ var PopupGenerateItems = ( function()
                     }.bind(undefined) },
 		        	{ label: 'Copy ItemSchema', jsCallback: function() {
                         SteamOverlayAPI.CopyTextToClipboard( InventoryAPI.BuildItemSchemaDefJSON( item.itemid ) );
+                    }.bind(undefined) },
+		        	{ label: 'Copy EconItemDef', jsCallback: function() {
+                        SteamOverlayAPI.CopyTextToClipboard( InventoryAPI.GetEconItemDefinition( item.id ) );
                     }.bind(undefined) }
 		        ];
             

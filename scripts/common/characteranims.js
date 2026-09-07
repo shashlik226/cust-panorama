@@ -198,10 +198,10 @@ var CharacterAnims = ( function()
 			// z x y
 			let arr = [
 				[-80, 0, 0],
-				[-170, 40, 2],
-				[-170, -40, 2],
-				[-200, 80, 2],
-				[-200, -80, 2]
+				[-170, 40, 0],
+				[-170, -40, 0],
+				[-200, 80, 0],
+				[-200, -80, 0]
 			];
 			let offset = arr[sceneContext];
 			playerPanel.SetSceneOffset(offset[0], offset[1], offset[2]);

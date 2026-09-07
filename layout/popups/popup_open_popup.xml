@@ -9,7 +9,7 @@
 		{
 			var asd = $.GetContextPanel().FindChildInLayoutFile('TextEntry').text;
 			$.DispatchEvent( 'UIPopupButtonClicked', $.GetContextPanel() );
-			UiToolkitAPI.ShowCustomLayoutPopup( '', 'file://{resources}/layout/popups/'+asd+'.xml' );
+			UiToolkitAPI.ShowCustomLayoutPopup( '', 'file://{resources}/layout/'+asd+'.xml' );
 		}
   	</script>
 

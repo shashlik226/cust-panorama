@@ -510,21 +510,6 @@ var MainMenuStore = ( function()
 				
 				itemsByCategory.market.push( FauxItemId );
 			}
-			                                                                      
-			                                                                        
-			                                                             
-			   
-			  	                                                  
-			  		         
-			  
-			  	                                
-			  	 
-			  		                              
-			  	 
-			  	
-			  	                                            
-			   
-			                                                                                          
 			else if ( ( strBannerEntryCustomFormatString = StoreAPI.GetBannerEntryCustomFormatString( i ) ).startsWith( "coupon" ) )
 			{
 				if ( !_BAllowDisplayingItemInStore( FauxItemId ) )
@@ -580,25 +565,6 @@ var MainMenuStore = ( function()
 				{
 					itemsByCategory.store = [];
 				}
-
-				                            
-				                                                                         
-				   	                 
-				   	                        
-				   	                                                    
-				    
-				   	                                      
-
-					                                                                           
-					                                                                                  
-					                                                                             
-					                                                         
-					    
-					   	                           
-					   	                                      
-					    
-				   
-
 				itemsByCategory.store.push( FauxItemId );
 			}
 		}
@@ -1078,9 +1044,5 @@ var MainMenuStore = ( function()
 	$.RegisterForUnhandledEvent( 'PanoramaComponent_Store_PriceSheetChanged', MainMenuStore.Init );
 	$.RegisterForUnhandledEvent( 'FilterStoreCouponsDisplay', MainMenuStore.CouponsSearchFilterCallback );
 	$.RegisterForUnhandledEvent( 'PanoramaComponent_MyPersona_InventoryUpdated', MainMenuStore.OnInventoryUpdate );
-	                                                                                     
-	                                                                                                            
-
-	                                                                               
 	$.RegisterEventHandler( "SetCarouselSelectedChild", $.GetContextPanel(), MainMenuStore.SetCarouselSelectedChild );
 } )();

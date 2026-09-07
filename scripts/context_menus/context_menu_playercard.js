@@ -83,7 +83,6 @@ var contextmenuPlayerCard = ( function (){
 			name: 'watch',
 			icon: 'watch_tv',
 			AvailableForItem: function ( id ) {
-				return false;
 				return !GameStateAPI.IsLocalPlayerPlayingMatch() &&
 					FriendsListAPI.IsFriendWatchable( id ) &&
 					!GameStateAPI.IsPlayerConnected( id );
@@ -311,7 +310,6 @@ var contextmenuPlayerCard = ( function (){
 			name: 'report',
 			icon: 'alert',
 			AvailableForItem: function ( id ) {
-				return false;
 				return (
 					GameStateAPI.IsLocalPlayerPlayingMatch() ||
 					( GameStateAPI.IsLocalPlayerWatchingOwnDemo() && MatchInfoAPI.CanReportFromCurrentlyPlayingDemo() ) ||
@@ -329,7 +327,6 @@ var contextmenuPlayerCard = ( function (){
 			name: 'commend',
 			icon: 'smile',
 			AvailableForItem: function ( id ) {
-				return false;
 				return ( GameStateAPI.IsLocalPlayerPlayingMatch() || GameStateAPI.GetGameModeInternalName( false ) === "survival" ) &&
 					!_IsSelf( id ) &&
 					GameStateAPI.IsPlayerConnected( id );

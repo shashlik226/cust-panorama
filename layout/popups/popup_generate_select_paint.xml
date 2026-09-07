@@ -1,0 +1,43 @@
+<root>
+	<styles>
+		<include src="file://{resources}/styles/csgostyles.css" />
+		<include src="file://{resources}/styles/mainmenu.css" />
+    	<include src="file://{resources}/styles/popups/popups_shared.css" />
+    	<include src="file://{resources}/styles/popups/popup_generate_skin.css" />
+        <include src="file://{resources}/styles/popups/popup_tournament_select_spray.css" />
+  	</styles>
+  	<scripts>
+		<include src="file://{resources}/scripts/common/formattext.js" />
+  	    <include src="file://{resources}/scripts/common/iteminfo.js" />
+  	    <include src="file://{resources}/scripts/popups/popup_generate_select_paint.js" />
+  	</scripts>
+
+  	<Panel class="PopupPanel popup-items-list Hidden" popupbackground="dim" onload="PopupGenerateSelectPaint.Init()">
+  		<Label class="PopupTitle" text="SKIN SELECTOR" />
+		<Panel class="SelectorFilters">
+			<DropDown class="PopupButton White" id="Weapon" menuclass="DropDownMenu Width-300" oninputsubmit="PopupGenerateSelectPaint.CreatePanels()" >
+				<Label text="Weapon (none)" id="none" value="none" class="DropDownMenu Width-300 White"/>
+			</DropDown>
+			<DropDown class="PopupButton White" id="Rarity" menuclass="DropDownMenu Width-300" oninputsubmit="PopupGenerateSelectPaint.CreatePanels()" >
+				<Label text="Rarity (none)" id="none" value="none" class="DropDownMenu Width-300 White"/>
+				<Label style="color: color-rarity-default;" 	text="#Rarity_Default_Weapon" 	 id="rarity0" value="0" class="DropDownMenu Width-300 White"/>
+				<Label style="color: color-rarity-common;" 		text="#Rarity_Common_Weapon" 	 id="rarity1" value="1" class="DropDownMenu Width-300 White"/>
+				<Label style="color: color-rarity-uncommon;" 	text="#Rarity_Uncommon_Weapon" 	 id="rarity2" value="2" class="DropDownMenu Width-300 White"/>
+				<Label style="color: color-rarity-rare;" 		text="#Rarity_Rare_Weapon" 		 id="rarity3" value="3" class="DropDownMenu Width-300 White"/>
+				<Label style="color: color-rarity-mythical;"	text="#Rarity_Mythical_Weapon" 	 id="rarity4" value="4" class="DropDownMenu Width-300 White"/>
+				<Label style="color: color-rarity-legendary;" 	text="#Rarity_Legendary_Weapon"  id="rarity5" value="5" class="DropDownMenu Width-300 White"/>
+				<Label style="color: color-rarity-ancient;" 	text="#Rarity_Ancient_Weapon" 	 id="rarity6" value="6" class="DropDownMenu Width-300 White"/>
+				<Label style="color: color-rarity-immortal;" 	text="#Rarity_Contraband_Weapon" id="rarity7" value="7" class="DropDownMenu Width-300 White"/>
+			</DropDown>
+			<DropDown class="PopupButton White" id="ItemSet" menuclass="DropDownMenu Width-300" oninputsubmit="PopupGenerateSelectPaint.CreatePanels()">
+				<Label text="ItemSet (none)" id="none" value="none" class="DropDownMenu Width-300 White"/>
+			</DropDown>
+		</Panel>
+		<TextEntry id="itemsFilter" ontextentrychange="PopupGenerateSelectPaint.CreatePanels()"/>
+		<Panel id="id-popup-items" class="PopupMessage left-right-flow-wrap vscroll">
+        </Panel>
+		<Panel class="PopupButtonRow">
+			<TextButton class="PopupButton" text="#UI_Cancel" onactivate="$.DispatchEvent( 'UIPopupButtonClicked', '' );" />
+		</Panel>
+  	</Panel>
+</root>

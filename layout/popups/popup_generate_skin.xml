@@ -24,14 +24,14 @@
 				<Label class="DropDownName" text="Rarity:" />
     			<DropDown class="PopupButton White" id="Rarity" menuclass="DropDownMenu Width-250">
 					<Label text="Do not override"	id="dont"	value="-1"/>
-					<Label style="color: color-rarity-default;" 	text="#Rarity_Default_Weapon" 		id="default" 	value="0"/>
-					<Label style="color: color-rarity-common;" 		text="#Rarity_Common_Weapon" 		id="common" 	value="1"/>
-					<Label style="color: color-rarity-uncommon;" 	text="#Rarity_Uncommon_Weapon" 		id="uncommon" 	value="2"/>
-					<Label style="color: color-rarity-rare;" 		text="#Rarity_Rare_Weapon" 			id="rare" 		value="3"/>
-					<Label style="color: color-rarity-mythical;"	text="#Rarity_Mythical_Weapon" 		id="mythical" 	value="4"/>
-					<Label style="color: color-rarity-legendary;" 	text="#Rarity_Legendary_Weapon" 	id="legendary" 	value="5"/>
-					<Label style="color: color-rarity-ancient;" 	text="#Rarity_Ancient_Weapon" 		id="ancient" 	value="6"/>
-					<Label style="color: color-rarity-immortal;" 	text="#Rarity_Contraband_Weapon" 	id="contraband" value="7"/>
+					<Label style="color: color-rarity-default;" 	text="#Rarity_Default_Weapon" 		id="rarity0" 	value="0"/>
+					<Label style="color: color-rarity-common;" 		text="#Rarity_Common_Weapon" 		id="rarity1" 	value="1"/>
+					<Label style="color: color-rarity-uncommon;" 	text="#Rarity_Uncommon_Weapon" 		id="rarity2" 	value="2"/>
+					<Label style="color: color-rarity-rare;" 		text="#Rarity_Rare_Weapon" 			id="rarity3" 	value="3"/>
+					<Label style="color: color-rarity-mythical;"	text="#Rarity_Mythical_Weapon" 		id="rarity4" 	value="4"/>
+					<Label style="color: color-rarity-legendary;" 	text="#Rarity_Legendary_Weapon" 	id="rarity5" 	value="5"/>
+					<Label style="color: color-rarity-ancient;" 	text="#Rarity_Ancient_Weapon" 		id="rarity6" 	value="6"/>
+					<Label style="color: color-rarity-immortal;" 	text="#Rarity_Contraband_Weapon" 	id="rarity7" 	value="7"/>
 				</DropDown>
 			</Panel>
 			<Panel class="Group">
@@ -58,6 +58,10 @@
 					<Label text="Custom" id="showfromfield" value="showfromfield"/>
 				</DropDown>
 			</Panel>
+			<Button id="PaintButtonGroup" class="PopupButton Row" onactivate="PopupGenerateSkins.SelectPaintAction()"> 
+				<Image texturewidth="24" textureheight="24" src="file://{images}/icons/ui/search.svg"/>
+				<Label text="Select paint from menu"/>
+			</Button>
 			<Panel id="PaintFieldGroup" class="Group">
 				<Label class="DropDownName" text="Paint ID:" />
     			<TextEntry maxchars="4" textmode="numeric" id="PaintField" text="2" ontextentrychange="PopupGenerateSkins.UpdateWeaponPreview()"/>
@@ -89,7 +93,7 @@
 		</Panel>
 	</Panel>
 	<Panel class="PopupButtonRow">
-		<TextButton class="PopupButton" text="COPY ITEMID" onactivate="PopupGenerateSkins.CopyItemID()" />
+		<TextButton class="PopupButton" text="OPTIONS" onactivate="PopupGenerateSkins.OpenOptionsMenu()" />
 		<TextButton class="PopupButton" text="GENERATE" onactivate="PopupGenerateSkins.CreateItem()" />
 		<TextButton class="PopupButton" text="#UI_Inspect" onactivate="PopupGenerateSkins.Inspect()" />
 		<TextButton class="PopupButton" text="#UI_Cancel" onactivate="$.DispatchEvent( 'UIPopupButtonClicked', '' );" />

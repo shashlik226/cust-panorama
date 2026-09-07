@@ -81,6 +81,7 @@ ItemImage {
 
 .PopupPanel.popup-items-list
 {
+    width: 900px;
     max-width: 900px;
 }
 
@@ -92,4 +93,12 @@ ItemImage {
 .FindPaintButton
 {
     margin-right: 8px;
+}
+
+.SelectorFilters
+{
+    flow-children: right;
+    width: 100%;
+    height: fit-children;
+    margin: 12px;
 }

@@ -61,6 +61,7 @@ var StoreItems;
         GetTournamentItems();
         MakeCategory('nightmode', [[ 7041, 7042 ], [ 7043, 7044 ], [ 7045, 7046 ], [ 7047, 7048 ], [ 7049, 7050 ], [ 7051, 7052 ]]);
         MakeCategory('nightmode2', [[ 7029, 7030 ], [ 7033, 7034 ], [ 7031, 7032 ], [ 7035, 7036 ], [ 7038, 7037 ], [ 7040, 7039 ]]);
+        MakeCategory('operation', [[ 7 ]]);
     }
     StoreItems.MakeStoreItemList = MakeStoreItemList;
 

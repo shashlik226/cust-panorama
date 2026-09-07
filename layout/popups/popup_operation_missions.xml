@@ -1,0 +1,14 @@
+<root>
+	<styles>
+		<include src="file://{resources}/styles/csgostyles.css" />
+		<include src="file://{resources}/styles/mainmenu.css" />
+    	<include src="file://{resources}/styles/popups/popups_shared.css" />
+  	</styles>
+
+  	<Panel class="PopupPanel Hidden" popupbackground="dim">
+		<Frame class="full-width full-height" src="file://{resources}/layout/operation/operation_mainmenu.xml" />
+		<Panel class="PopupButtonRow">
+			<TextButton class="PopupButton" text="#UI_Close" onactivate="$.DispatchEvent( 'UIPopupButtonClicked', '' );" />
+		</Panel>
+  	</Panel>
+</root>

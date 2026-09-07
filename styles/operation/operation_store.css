@@ -988,3 +988,9 @@
 	transition-duration: .25s;
 	transition-timing-function: ease-in-out;
 }
+
+.operation-store .op-store-progress
+{
+	opacity: 0;
+	visibility: collapse;
+}

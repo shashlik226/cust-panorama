@@ -23,7 +23,7 @@ var ServerBrowser = (function () {
 			steamAPIKey = config.steam_api_token;
 		}
 
-		_RefreshList(false);
+		_RefreshList();
 	}
 
 	function _HTTPRequest(url, type, data, callback) {
@@ -95,6 +95,9 @@ var ServerBrowser = (function () {
 
 			if(!server.Secure && !server.Password && !server.AppID)
 				elEntry.FindChildTraverse( 'server_status' ).visible = false;
+
+			if(!server.hasOwnProperty('map'))
+				server.map = 'de_dust';
 	
 			elEntry.SetDialogVariable( 'name', server.name );
 			elEntry.SetDialogVariable( 'players', server.players+"/"+server.max_players );
@@ -126,7 +129,7 @@ var ServerBrowser = (function () {
 				GameInterfaceAPI.ConsoleCommand('connect '+server.addr);
 			});
 			elConnectButton.SetPanelEvent('onmouseover', () => {
-				UiToolkitAPI.ShowTextTooltip( 'JoinToServer'+i, 'Connect' );
+				UiToolkitAPI.ShowTextTooltip( 'JoinToServer'+i, 'Connect to '+server.addr );
 			});
 			elConnectButton.SetPanelEvent('onmouseout', () => {
 				UiToolkitAPI.HideTextTooltip();
@@ -134,11 +137,10 @@ var ServerBrowser = (function () {
 
 		});
 		_SetState('list');
-	};
+	}
 
-	function _RefreshList(cycle) {
+	function _RefreshList() {
 		if(!steamAPIKey) return;
-		if(!cycle) $.Schedule( 30.0, _RefreshList );
 
 		elRefreshBtn.enabled = false;
 		_SetState('loading');
@@ -151,7 +153,6 @@ var ServerBrowser = (function () {
 			}
 		});
 	}
-
 
 	function _OnServerReceiveFailed(error) {
 		var elLabel = elRoot.FindChildInLayoutFile( 'nodata-label' );

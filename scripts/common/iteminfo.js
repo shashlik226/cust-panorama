@@ -232,7 +232,7 @@ var ItemInfo = ( function() {
 
 		var list = [];
 
-		var slotStrings = LoadoutAPI.GetLoadoutSlotNames( false );
+		var slotStrings = LoadoutAPI.GetLoadoutSlotNames( true );
 		var slots = JSON.parse( slotStrings );
 
 		slots.forEach( slot => 

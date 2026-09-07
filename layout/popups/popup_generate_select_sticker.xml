@@ -14,9 +14,11 @@
 
   	<Panel class="PopupPanel popup-items-list Hidden" popupbackground="dim" onload="PopupGenerateSelectSticker.Init()">
   		<Label class="PopupTitle" text="STICKER SELECTOR" />
+		<ToggleButton id="hideTournamentStickers" class="PopupButton Row" onactivate="PopupGenerateSelectSticker.CreatePanels()" selected="true">
+			<Label text="Hide Tournament Stickers"/>
+		</ToggleButton>
 		<TextEntry id="itemsFilter" ontextentrychange="PopupGenerateSelectSticker.CreatePanels()"/>
 		<Panel id="id-popup-items" class="PopupMessage left-right-flow-wrap vscroll">
-                                  
         </Panel>
 		<Panel class="PopupButtonRow">
 			<TextButton class="PopupButton" text="#UI_Cancel" onactivate="$.DispatchEvent( 'UIPopupButtonClicked', '' );" />

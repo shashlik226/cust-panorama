@@ -138,7 +138,7 @@ var MainMenu = ( function() {
 
 		$( '#MainMenuNavBarPlay' ).SetHasClass( 'mainmenu-navbar__btn-small--hidden', false );
 
-		// _UpdateOverwatch();
+		_UpdateOverwatch();
 
 		_UpdateNotifications();
 		_ShowWeaponUpdatePopup();
@@ -309,7 +309,7 @@ var MainMenu = ( function() {
 		$( '#MainMenuNavBarShowCommunityServerBrowser' ).SetHasClass( 'mainmenu-navbar__btn-small--hidden', !bIsCommunityServer );
 	
 		_UpdateSurvivalEndOfMatchInstance();
-		// _AddPauseMenuMissionPanel();
+		_AddPauseMenuMissionPanel();
 		_OnHomeButtonPressed();
 	};
 
@@ -332,7 +332,7 @@ var MainMenu = ( function() {
 			}
 		}
 
-		if ( tab === 'JsInventory' || tab === 'JsPlayerStats' )
+		if ( tab === 'JsInventory' || tab === 'JsPlayerStats' || tab === 'JsMainMenuStore' )
 		{
 			if ( !MyPersonaAPI.IsInventoryValid() || !MyPersonaAPI.IsConnectedToGC() )
 			{
@@ -862,7 +862,7 @@ var MainMenu = ( function() {
 			a_currentVaniyData[i] = _CreateVanitySettings(oSettings);
 			m_latestVaniyData[i] = oSettings.vanityData;
 
-			_VanityDebugMsg(`Vanity data of ${i}: '${m_latestVaniyData[0]}' isUpdated: ${bIsVanityUpdated} isForce: ${forceUpdate}`);
+			_VanityDebugMsg(`Vanity data of ${i}: '${m_latestVaniyData[i]}' isUpdated: ${bIsVanityUpdated} isForce: ${forceUpdate}`);
 
 			if(bIsSelf && bIsVanityUpdated)
 				_ApplyVanitySettingsToLobbyMetadata(oSettings);
@@ -1069,6 +1069,12 @@ var MainMenu = ( function() {
 			vanityPanel.SetDirectionalLightModify( 2 );
 			vanityPanel.SetDirectionalLightColor( 0.0, 0.0, 0.0 );
 			vanityPanel.SetDirectionalLightDirection( 0.76, 0.48, -0.44 );
+		}
+		else
+		{
+			vanityPanel.SetDirectionalLightModify( 0 );
+			vanityPanel.SetDirectionalLightColor( 1, 1, 1 );
+			vanityPanel.SetDirectionalLightDirection( 0, 0, -90 );
 		}
 	};
 
@@ -1924,6 +1930,7 @@ var MainMenu = ( function() {
 	function _ShowDevContextMenu() {
 		var items = [
 			{ label: 'ControlsLib', jsCallback: _NavigateToTab.bind( undefined, 'JSConsolsLib', 'controlslibrary' ) },
+			// { label: 'Stats', jsCallback: _NavigateToTab.bind( undefined, 'JSStats', 'mainmenu_statistics' ) },
 			{ label: 'Copy GlobalObject to clipboard', jsCallback: function() {
 				var obj = UiToolkitAPI.GetGlobalObject();
 				SteamOverlayAPI.CopyTextToClipboard(JSON.stringify(obj));
@@ -1976,7 +1983,7 @@ var MainMenu = ( function() {
 		vanityPanel.SetSceneRotation(Number(rotation[0]), Number(rotation[1]), Number(rotation[2]));
 	}
 
-	function _DebugCreateVanityModel(justUpdate = false) {
+	function _DebugCreateVanityModel() {
 		let playerIdx = Number($( '#vanitydebug_player' ).GetSelected().id);
 		let vanityData = $( '#vanitydebug_vanityData' ).text;
 
@@ -2013,6 +2020,40 @@ var MainMenu = ( function() {
 
 		VanityPlayerInfo.DeleteVanityInfoPanel($('#MainMenuVanityInfo'), playerIdx);
 		vanityPanel.DeleteAsync(0);
+	}
+
+	function _DebugVanityUpdateLighting() {
+		let playerIdx = Number($( '#vanitydebug_player' ).GetSelected().id);
+
+		let modify = $( '#vanitydebug_lightModify' ).text;
+		let color = $("#vanitydebug_lightColor").text.split(" ");
+		let direction = $("#vanitydebug_lightDirection").text.split(" ");
+		let pulseFlicker = $("#vanitydebug_lightPulseFlicker").text.split(" ");
+		let rotation = $("#vanitydebug_lightRotation").text.split(" ");
+
+		let vanityPanel = $('#MainMenuVanityPlayer'+playerIdx);
+		if(!vanityPanel) {
+			_VanityDebugMsg('Vanity panel '+playerIdx+' not exists.');
+			return;
+		}
+
+		vanityPanel.SetDirectionalLightModify(Number(modify));
+		vanityPanel.SetDirectionalLightColor(Number(color[0]), Number(color[1]), Number(color[2]));
+		vanityPanel.SetDirectionalLightDirection(Number(direction[0]), Number(direction[1]), Number(direction[2]));
+		vanityPanel.SetDirectionalLightPulseFlicker(Number(pulseFlicker[0]), Number(pulseFlicker[1]), Number(pulseFlicker[2]), Number(pulseFlicker[3]));
+		vanityPanel.SetDirectionalLightRotation(Number(rotation[0]), Number(rotation[1]), Number(rotation[2]));
+	}
+
+	function _DebugVanityRestoreLighting() {
+		let playerIdx = Number($( '#vanitydebug_player' ).GetSelected().id);
+
+		let vanityPanel = $('#MainMenuVanityPlayer'+playerIdx);
+		if(!vanityPanel) {
+			_VanityDebugMsg('Vanity panel '+playerIdx+' not exists.');
+			return;
+		}
+
+		vanityPanel.RestoreLightingState();
 	}
 
 	return {
@@ -2076,9 +2117,11 @@ var MainMenu = ( function() {
 		OpenSubscriptionUpsell				: _OpenSubscriptionUpsell,
 		UpdateUnlockCompAlert				: _UpdateUnlockCompAlert,
 		ShowDevContextMenu					: _ShowDevContextMenu,
-		DebugUpdateVanityModel: _DebugUpdateVanityModel,
-		DebugCreateVanityModel: _DebugCreateVanityModel,
-		DebugDeleteVanityModel: _DebugDeleteVanityModel
+		DebugUpdateVanityModel				: _DebugUpdateVanityModel,
+		DebugCreateVanityModel				: _DebugCreateVanityModel,
+		DebugDeleteVanityModel				: _DebugDeleteVanityModel,
+		DebugVanityUpdateLighting			: _DebugVanityUpdateLighting,
+		DebugVanityRestoreLighting			: _DebugVanityRestoreLighting
 	};
 })();
 
@@ -2113,7 +2156,7 @@ var MainMenu = ( function() {
 	$.RegisterForUnhandledEvent( 'LootlistItemPreview', MainMenu.OnLootlistItemPreview );
 	$.RegisterForUnhandledEvent( 'ShowXrayCasePopup', MainMenu.OnShowXrayCasePopup );
 	$.RegisterForUnhandledEvent( 'PanoramaComponent_Inventory_WeaponPreviewRequest', MainMenu.WeaponPreviewRequest );
-	// $.RegisterForUnhandledEvent( 'PanoramaComponent_Overwatch_CaseUpdated', MainMenu.UpdateOverwatch );
+	$.RegisterForUnhandledEvent( 'PanoramaComponent_Overwatch_CaseUpdated', MainMenu.UpdateOverwatch );
 	$.RegisterForUnhandledEvent( "PanoramaComponent_TournamentMatch_DraftUpdate", MainMenu.TournamentDraftUpdate );
 
 	$.RegisterForUnhandledEvent( 'ShowAcknowledgePopup', MainMenu.ShowAcknowledgePopup );

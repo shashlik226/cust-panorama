@@ -17,6 +17,10 @@ var MainMenuStore;
 
         // ugh
         _m_cp.SetDialogVariable( "tournament_name", $.Localize( '#CSGO_Watch_Cat_Events' ) );
+		_m_cp.SetDialogVariable( "operation_name", $.Localize( '#op11_name' ) );
+        $('#id-store-page-operation-container').SetHasClass('Hidden', false);
+        $('#id-store-page-operation-container').SetAttributeInt( "season_access", 10 );
+        $('#id-store-page-operation-container').AddClass('operation-store');
 
         if (!ConnectedToGcCheck()) {
             return;

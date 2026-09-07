@@ -906,7 +906,7 @@ var ItemContextEntires = ( function (){
 						'none'
 					);
 				}
-		}
+			}
 		},
 		{
 			name: 'sell',
@@ -928,7 +928,7 @@ var ItemContextEntires = ( function (){
 				return 'TopSeparator';
 			},
 			AvailableForItem: function ( id ) {
-				return true;
+				return !InventoryAPI.IsItemDefault( id );
 			},
 			OnSelected: function ( id ) {
 				$.DispatchEvent( 'ContextMenuEvent', '' );

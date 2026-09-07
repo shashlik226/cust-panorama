@@ -99,6 +99,9 @@
 						
 					</Panel>
 				</Panel>
+				<Panel id="id-store-page-operation" class="inv-category">
+					<Frame id="id-store-page-operation-container" src="file://{resources}/layout/operation/operation_store.xml" season_access="10"  class="full-width full-height"/>
+				</Panel>
 			</Panel>
 		</Panel>
 	</Panel>

@@ -283,3 +283,9 @@
     background-size: cover;
     background-position: 50% 50%;
 }
+
+.operation-store .op-store-progress
+{
+	opacity: 0;
+	visibility: collapse;
+}
