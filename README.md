@@ -13,6 +13,7 @@ current features:
  - skins\items generator (delete key)
  - in panorama simple server browser
  - more options in settings menu
+ - multi item deleting in inventory
 
 installing:
  - you need to patch panorama.dll [you can use this for example](https://github.com/excizik/csgo-panorama-patcher)
