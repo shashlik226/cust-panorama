@@ -1,8 +1,6 @@
 use better with [custom game coordinator](https://github.com/GT-610/csgo_gc/tree/main)
 
-for advanced menu press delete(not backspace) key in mainmenu
-
-if you want use skin/item generator you need to setup rcon
+for advanced menu press right click on settings button
 
 cl_inventory_debug_tooltip 1 for some debug in inventory
 
@@ -10,7 +8,7 @@ current features:
  - like cs2 vanity in mainmenu
  - like cs2 fullscreen store
  - unlocked danger zone in play menu
- - skins\items generator (delete key)
+ - skins\items generator (need to setup rcon)
  - in panorama simple server browser
  - more options in settings menu
  - multi item deleting in inventory
