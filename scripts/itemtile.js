@@ -269,7 +269,13 @@ var ItemTile = ( function()
 				$.DispatchEvent( 'UpdateSelectItemForCapabilityPopup', capabilityInfo.capability, id,
 					$.GetContextPanel().BHasClass( 'capability_multistatus_selected' )
 					);
-				                                                                               
+			}
+			else if ( capabilityInfo.capability === 'delete' )
+			{
+				$.GetContextPanel().ToggleClass( 'capability_multistatus_selected' );
+				$.DispatchEvent( 'UpdateSelectItemForCapabilityPopup', capabilityInfo.capability, id,
+					$.GetContextPanel().BHasClass( 'capability_multistatus_selected' )
+					);
 			}
 			else if ( capabilityInfo.capability === 'casketstore' )
 			{

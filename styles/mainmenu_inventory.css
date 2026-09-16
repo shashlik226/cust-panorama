@@ -91,6 +91,12 @@
 	height: 24px;
 }
 
+.inv-popup-title__image.hidden,
+.inv-popup-title__text.hidden
+{
+	visibility: collapse;
+}
+
 .inv-popup-rightextra-label
 {
 	margin-right: 8px;

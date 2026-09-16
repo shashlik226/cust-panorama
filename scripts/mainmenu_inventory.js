@@ -418,6 +418,12 @@ var InventoryPanel = ( function (){
 				_UpdateSearchPanelVisibility( true );
 			} );
 
+			var elInvDeleteBtn = elTopRightExtraButtons.FindChild( "InvDeleteBtn" );
+			elInvDeleteBtn.SetPanelEvent( 'onactivate', function ()
+			{
+				$.DispatchEvent( "ShowSelectItemForCapabilityPopup", 'delete', 0, '' );
+			} );
+
 			
 			_ShowHideXrayBtn();
 			var elXrayBtn = elTopRightExtraButtons.FindChildInLayoutFile( "InvXrayBtn" );
@@ -822,7 +828,7 @@ var InventoryPanel = ( function (){
 		if( !elList )
 			elList =  $.CreatePanel('InventoryItemList', _m_elSelectItemForCapabilityPopup, 'ItemListForCapability' );
 
-		elList.SetHasClass( 'inv-multi-select-allow', capability === "casketstore" || capability === "casketretrieve" );
+		elList.SetHasClass( 'inv-multi-select-allow', capability === "casketstore" || capability === "casketretrieve" || capability === "delete" );
 		var capabilityFilter = capability + ':' + id;
 
 		_UpdateActiveItemList(
@@ -841,7 +847,7 @@ var InventoryPanel = ( function (){
 	{
 		var elActionBar = _m_elSelectItemForCapabilityPopup.FindChildInLayoutFile( 'CapabilityPopupActionBar' );
 		
-		if ( capability === "casketstore" || capability === "casketretrieve" )
+		if ( capability === "casketstore" || capability === "casketretrieve" || capability === "delete" )
 		{
 			elList.SetAttributeInt( "capability_multistatus_selected", 1 );
 
@@ -853,6 +859,9 @@ var InventoryPanel = ( function (){
 				);
 				elActionBar.BLoadLayoutSnippet( 'CapabilityActionBar' );
 			}
+
+			elActionBar.FindChildInLayoutFile( 'CapabilityPopupMultiStatusBtn' ).SetHasClass('Positive', capability !== "delete");
+			elActionBar.FindChildInLayoutFile( 'CapabilityPopupMultiStatusBtn' ).SetHasClass('Negative', capability === "delete");
 			
 			elList.SetHasClass( 'inv-item-list-fill-height-flow', true );
 			_UpdateMultiSelectDisplay( elActionBar.FindChildInLayoutFile( 'CapabilityPopupMultiStatus' ) );
@@ -900,14 +909,20 @@ var InventoryPanel = ( function (){
 		{
 			szPrefixString = '#inv_select_casketstore';
 		}
+		else if ( capability === 'delete' ) 
+		{
+			szPrefixString = '#inv_context_delete';
+		}
 		elPrefixString.text = szPrefixString;
 
 		                                             
 		var elImage = _m_elSelectItemForCapabilityPopup.FindChildInLayoutFile('CapItemImage');
 		elImage.itemid = id;
+		elImage.SetHasClass('hidden', capability === 'delete');
 
 		var elLabel = _m_elSelectItemForCapabilityPopup.FindChildInLayoutFile('CapItemName');
 		elLabel.text = ItemInfo.GetName(id);
+		elLabel.SetHasClass('hidden', capability === 'delete');
 	};
 
 	var _UpdateSelectItemForCapabilityPopup = function ( capability, itemid, bSelected )
@@ -983,6 +998,12 @@ var InventoryPanel = ( function (){
 				'&casket_item_id=' + _SelectedCapabilityInfo.initialItemId +
 				'&subject_item_id=' + strItemIDs
 			);
+			break;
+		case 'delete':
+			arrItemIDs.forEach((id) => {
+				$.Msg(`Deleting item: ${InventoryAPI.GetItemName(id)} (${id})`);
+				InventoryAPI.DeleteItem(id);
+			});
 			break;
 		}
 	}
